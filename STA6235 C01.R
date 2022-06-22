@@ -38,13 +38,19 @@ one_summary <- summary(one_model)
 #one_summary
 
 # find predicted values
-one$pred  <- predict(one_model)  
+one$pred  <- predict(one_model) 
 
 # find residual values
 one$resid <- residuals(one_model)
 
 # square the error (residual)
 one$resid2 <- one$resid^2
+
+# do the above data management with tidyverse
+one <- one %>% 
+  mutate(pred = predict(one_model),
+         resid = residuals(one_model),
+         resid2 = residuals(one_model)^2)
 
 # find SSE
 sum(one$resid2)
@@ -53,7 +59,15 @@ nrow(one)-2
 # convert to MSE
 sum(one$resid2)/(nrow(one)-2)
 
+# use ANOVA to find SSE and MSE
 anova(one_model)
 
-#remove residual column
-test <- subset(one, select=-c(resid))
+# other tidyverse examples
+test <- one %>%
+  select(-c(dev_x, dev_y, dev_xy, dev_x2, dev_y2))
+
+test <- one %>%
+  select(c(x, y, pred, resid)) %>%
+  filter(y > 250)
+
+
