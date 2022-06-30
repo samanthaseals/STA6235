@@ -1,0 +1,47 @@
+---
+title: "STA6235: Chapter 1 Examples"
+author: "S. Seals"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 2
+    toc_float: yes
+always_allow_html: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+library(tidyverse)
+
+# enter data
+x <- c( 80,  30,  50,  90,  70,  60, 120,  80, 100,
+        50,  40,  70,  90,  20, 110, 100,  30,  50,
+        90, 110,  30,  90,  40,  80,  70)
+
+y <- c(399, 121, 221, 376, 361, 224, 546, 352, 353,
+       157, 160, 252, 389, 113, 435, 420, 212, 268,
+       377, 421, 273, 468, 244, 342, 323)
+```
+
+```{r}
+# put together as tibble
+one <- tibble(x, y)
+
+# find summary stats
+means <- summarize(one, mean_x = mean(x, na.rm=TRUE), sd_x = sd(x, na.rm=TRUE), 
+                        mean_y = mean(y, na.rm=TRUE), sd_y = sd(y, na.rm=TRUE))
+
+# construct model
+one_model <- lm(y ~ x, data = one)
+one_summary <- summary(one_model)
+one_coef <- coefficients(one_model)
+```
+
+## Regression Model
+
+The resulting regression model is 
+\[ \hat{Y} = `r round(one_coef[[1]], digits=2)` + `r round(one_coef[[2]], digits=2)`X \]
+
+\[ \hat{Y} = `r one_coef[[1]]` + `r one_coef[[2]]`X \]
+

@@ -1,0 +1,438 @@
+---
+title: "Example - Ice Cream Ratings"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(gsheet)
+library(tidyverse)
+library(fastDummies)
+
+data <- as_tibble(gsheet2tbl("https://docs.google.com/spreadsheets/d/1QH5XDEUEmBGp2ZzO7OQS0T1vSELIjFAi2gTmnqokoMg/edit#gid=0"))
+
+data$Sweetner <- str_remove(data$Sweetner, "[%]")
+  data$Sweetner <- as.numeric(data$Sweetner)
+
+data$MilkFat <- str_remove(data$MilkFat, "[%]")
+  data$MilkFat <- as.numeric(data$MilkFat)
+  
+data$Air <- str_remove(data$Air, "[%]")
+  data$Air <- as.numeric(data$Air)
+```
+
+Commercially produced ice cream is made from a mixture of ingredients: a minimum of 10% milk fat, 9—12% milk solids, 12—16% sweetener, 0.2—0.5% stabilizers and emulsifiers, and 55—64% water. Air is incorporated with the above ingredients during the mixing process. The finest ice creams have between 3% and 15% air.
+
+A food scientist is investigating how varying the amounts of the above ingredients impacts the sensory rating of the final product. The scientist decides to use three levels of milk fat: 10%, 12%, and 15%; three amounts of air: 5%, 10%, 15%; and two levels of sweeteners: 12%, 16%.
+
+## Categorical Predictors
+
+#### Create Dummy Variables
+
+```{r}
+data <- dummy_cols(data, select_columns = c("Sweetner", "MilkFat", "Air"))
+```
+
+#### Construct the Model with All Main Effects
+
+```{r}
+m <- lm(Ratings ~ Sweetner_12 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15, data = data)
+
+summary(m)
+```
+
+#### Is Sweetner a Significant Predictor of Sensory Rating?
+
+```{r}
+summary(m)
+```
+
+**Hypotheses**
+
+&emsp; &emsp; $H_0: \ \beta_{\text{Sweetner}} = 0$ \\
+&emsp; &emsp; $H_1: \ \beta_{\text{Sweetner}} \ne 0$
+
+**Test Statistic**
+
+&emsp; &emsp; $t_0 = -1.985$
+
+***p*-value**
+
+&emsp; &emsp; $p = 0.0529$
+
+**Rejection Region**
+
+&emsp; &emsp; Reject $H_0$ if $p < \alpha$; $\alpha = 0.05$.
+
+**Conclusion and Interpretation**
+
+&emsp; &emsp; FTR $H_0$. There is not sufficient evidence to suggest that sweetener is a predictor of sensory rating.
+
+#### Is Milk Fat a Significant Predictor of Sensory Rating?
+
+```{r}
+full <- lm(Ratings ~ Sweetner_12 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15, data = data)
+
+reduced <- lm(Ratings ~ Sweetner_12 + Air_10 + Air_15, data = data)
+
+anova(reduced, full)
+```
+
+**Hypotheses**
+
+&emsp; &emsp; $H_0: \ \beta_{\text{MilkFat12}} = \beta_{\text{MilkFat15}} = 0 $ \\
+&emsp; &emsp; $H_1:$ at least one $\beta_i$ is $\ne 0$ 
+
+**Test Statistic**
+
+&emsp; &emsp; $F_0 = 10.283$
+
+***p*-value**
+
+&emsp; &emsp; $p < 0.001$ 
+
+**Rejection Region**
+
+&emsp; &emsp; Reject $H_0$ if $p < \alpha$; $\alpha = 0.05$
+
+**Conclusion and Interpretation**
+
+&emsp; &emsp; Reject $H_0$. There is sufficient evidence to suggest that milk fat is a significant predictor of sensory rating. 
+
+#### Is Air a Significant Predictor of Sensory Rating?
+
+```{r}
+full <- lm(Ratings ~ Sweetner_12 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15, data = data)
+
+reduced <- lm(Ratings ~ Sweetner_12 + MilkFat_12 + MilkFat_15, data = data)
+
+anova(reduced, full)
+```
+
+**Hypotheses**
+
+&emsp; &emsp; $H_0: \ \beta_{\text{Air10}} = \beta_{\text{Air15}} = 0 $ \\
+&emsp; &emsp; $H_1:$ at least one $\beta_i$ is $\ne 0$ 
+
+**Test Statistic**
+
+&emsp; &emsp; $F_0 = 17.156$
+
+***p*-value**
+
+&emsp; &emsp; $p < 0.001$ 
+
+**Rejection Region**
+
+&emsp; &emsp; Reject $H_0$ if $p < \alpha$; $\alpha = 0.05$
+
+**Conclusion and Interpretation**
+
+&emsp; &emsp; Reject $H_0$. There is sufficient evidence to suggest that air is a significant predictor of sensory rating.
+
+## Visualization - Categorical Predictors Only
+
+We have a model with three categorical predictors.
+
+Ratings will go on the Y axis. This is always the outcome of interest.
+
+Milk fat will go on the X axis. This should be something we can treat as continuous; if you have multiple to choose from, choose the one with the most categories.
+
+We can combine the other two predictors (air and sweetener) to create lines:
+- Air 5, Sweetener 12
+- Air 5, Sweetener 16
+- Air 10, Sweetener 12
+- Air 10, Sweetener 16
+- Air 15, Sweetener 12
+- Air 15, Sweetener 16
+
+```{r}
+c <- coefficients(m)
+
+c
+
+data <- data %>%
+  mutate(y_s12_a5 = c["(Intercept)"] + c["Sweetner_12"]*1 + c["MilkFat_12"]*MilkFat_12 + c["MilkFat_15"]*MilkFat_15 +
+           c["Air_10"]*0 + c["Air_15"]*0,
+         y_s16_a5 = c["(Intercept)"] + c["Sweetner_12"]*0 + c["MilkFat_12"]*MilkFat_12 + c["MilkFat_15"]*MilkFat_15 +
+           c["Air_10"]*0 + c["Air_15"]*0,
+         y_s12_a10 = c["(Intercept)"] + c["Sweetner_12"]*1 + c["MilkFat_12"]*MilkFat_12 + c["MilkFat_15"]*MilkFat_15 +
+           c["Air_10"]*1 + c["Air_15"]*0,
+         y_s16_a10 = c["(Intercept)"] + c["Sweetner_12"]*0 + c["MilkFat_12"]*MilkFat_12 + c["MilkFat_15"]*MilkFat_15 +
+           c["Air_10"]*1 + c["Air_15"]*0,
+         y_s12_a15 = c["(Intercept)"] + c["Sweetner_12"]*1 + c["MilkFat_12"]*MilkFat_12 + c["MilkFat_15"]*MilkFat_15 +
+           c["Air_10"]*0 + c["Air_15"]*1,
+         y_s16_a15 = c["(Intercept)"] + c["Sweetner_12"]*0 + c["MilkFat_12"]*MilkFat_12 + c["MilkFat_15"]*MilkFat_15 +
+           c["Air_10"]*0 + c["Air_15"]*1)
+
+data %>% ggplot(aes(x = MilkFat, y = Ratings)) +
+  geom_point() +
+  geom_line(aes(y = y_s12_a5), color = "pink") + 
+  geom_line(aes(y = y_s16_a5), color = "blue") +
+  geom_line(aes(y = y_s12_a10), color = "green") + 
+  geom_line(aes(y = y_s16_a10), color = "red") +
+  geom_line(aes(y = y_s12_a15), color = "purple") + 
+  geom_line(aes(y = y_s16_a15)) +
+  theme_minimal()
+```
+
+## Continuous Predictors
+
+#### Construct the Model with All Main Effects
+
+#### Is Sweetner a Significant Predictor of Sensory Rating?
+
+```{r}
+
+```
+
+**Hypotheses**
+
+
+**Test Statistic**
+
+
+***p*-value**
+
+
+**Rejection Region**
+
+
+**Conclusion and Interpretation**
+
+#### Is Milk Fat a Significant Predictor of Sensory Rating?
+
+```{r}
+
+```
+
+**Hypotheses**
+
+
+**Test Statistic**
+
+
+***p*-value**
+
+
+**Rejection Region**
+
+
+**Conclusion and Interpretation**
+
+#### Is Air a Significant Predictor of Sensory Rating?
+
+```{r}
+
+```
+
+**Hypotheses**
+
+
+**Test Statistic**
+
+
+***p*-value**
+
+
+**Rejection Region**
+
+
+**Conclusion and Interpretation**
+
+## Interaction Terms 
+
+#### Construct the Model with the Three-Way Interaction -- Categorical Predictors
+
+```{r}
+m <- lm(Ratings ~ Sweetner_16 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15 +
+        Sweetner_16:MilkFat_12 + Sweetner_16:MilkFat_15 +
+          Sweetner_16:Air_10 + Sweetner_16:Air_15 +
+          MilkFat_12:Air_10 + MilkFat_12:Air_15 +
+          MilkFat_15:Air_10 + MilkFat_15:Air_15 +
+          Sweetner_16:MilkFat_15:Air_15 + 
+          Sweetner_16:MilkFat_15:Air_10 +
+          Sweetner_16:MilkFat_12:Air_15 +
+          Sweetner_16:MilkFat_12:Air_10, data = data)
+
+summary(m)
+
+```
+
+#### Testing the Three-Way Interaction Between Sweetner, Milk Fat, and Air
+
+```{r}
+full <- lm(Ratings ~ Sweetner_16 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15 +
+        Sweetner_16:MilkFat_12 + Sweetner_16:MilkFat_15 +
+          Sweetner_16:Air_10 + Sweetner_16:Air_15 +
+          MilkFat_12:Air_10 + MilkFat_12:Air_15 +
+          MilkFat_15:Air_10 + MilkFat_15:Air_15 +
+          Sweetner_16:MilkFat_15:Air_15 + 
+          Sweetner_16:MilkFat_15:Air_10 +
+          Sweetner_16:MilkFat_12:Air_15 +
+          Sweetner_16:MilkFat_12:Air_10, data = data)
+
+reduced <- lm(Ratings ~ Sweetner_16 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15 +
+        Sweetner_16:MilkFat_12 + Sweetner_16:MilkFat_15 +
+          Sweetner_16:Air_10 + Sweetner_16:Air_15 +
+          MilkFat_12:Air_10 + MilkFat_12:Air_15 +
+          MilkFat_15:Air_10 + MilkFat_15:Air_15, data = data)
+
+anova(reduced, full)
+```
+
+**Hypotheses**
+
+
+**Test Statistic**
+
+
+***p*-value**
+
+
+**Rejection Region**
+
+
+**Conclusion and Interpretation**
+
+#### Construct the Model with the Three-Way Interaction -- Continuous Predictors
+
+```{r}
+m <- lm(Ratings ~ Sweetner + MilkFat + Air + Sweetner:MilkFat + Sweetner:Air + MilkFat:Air + Sweetner:MilkFat:Air, data = data)
+
+m <- lm(Ratings ~ Sweetner*MilkFat*Air, data = data)
+
+summary(m)
+```
+
+#### Testing the Three-Way Interaction Between Sweetner, Milk Fat, and Air
+
+**Hypotheses**
+
+
+**Test Statistic**
+
+
+***p*-value**
+
+
+**Rejection Region**
+
+
+**Conclusion and Interpretation**
+
+
+#### Remove the Three-Way Interaction
+
+```{r}
+m <- lm(Ratings ~ Sweetner + MilkFat + Air + Sweetner:MilkFat + Sweetner:Air + MilkFat:Air, data = data)
+
+summary(m)
+```
+
+
+#### Test Significance of All Interaction Terms
+
+```{r}
+
+```
+
+**Hypotheses**
+
+
+**Test Statistic**
+
+
+***p*-value**
+
+
+**Rejection Region**
+
+
+**Conclusion and Interpretation**
+
+
+#### Examining All Two-Way Interactions
+
+```{r}
+
+```
+ 
+Can we remove the non-significant interactions at the same time?
+
+```{r}
+full <- lm(Ratings ~ Sweetner + MilkFat + Air + Sweetner:MilkFat + Sweetner:Air + MilkFat:Air, data = data)
+
+reduced <- lm(Ratings ~ Sweetner + MilkFat + Air + MilkFat:Air, data = data)
+
+anova(reduced, full)
+
+summary(m)
+
+m <- lm(Ratings ~ Sweetner + MilkFat + Air + MilkFat:Air, data = data)
+
+summary(m)
+
+```
+
+Is there anything else we can remove?
+
+```{r}
+m <- lm(Ratings ~  MilkFat + Air + MilkFat:Air, data = data)
+```
+
+#### Final Model
+
+```{r}
+m <- lm(Ratings ~  MilkFat + Air + MilkFat:Air, data = data)
+summary(m)
+```
+
+## Visualization - Interaction
+
+We now will construct a visualization. First, we must decide what goes where on the graph. Let's put milk fat on the *x* axis and create lines with air. Let's remind ourselves of the levels of air:
+
+```{r}
+
+```
+
+We will use levels 5, 10, and 15 in our predictions. Note that if this were truly a continuous variable, we would want to look at the 25th percentile, the median, and the 75th percentile. 
+
+```{r}
+
+```
+
+We also will color our observations on the graph by the level of sweetner. We first need to turn it back into a factor variable,
+
+```{r}
+
+```
+
+Now we are ready to graph,
+
+```{r}
+
+```
+
+We can see that as milk fat increases...
+
+We can also examine this the other way, with air on the *x*-axis and milk fat defining the lines. Let's look at the levels of milk fat.
+
+```{r}
+
+```
+
+We will use levels 10, 12, and 15 in our predictions. Like we noted for air, if this were truly a continuous variable, we would want to look at the 25th percentile, the median, and the 75th percentile.
+
+```{r}
+
+```
+
+Now we are ready to graph,
+
+```{r}
+
+```
+
+We can see that as air increases....
