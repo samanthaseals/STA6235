@@ -1,0 +1,16 @@
+---
+title: "R Markdown Example"
+author: "Your Name Here" 
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
+```
+
+```{r}
+data <- read.csv("YOUR PATH HERE/social media.csv")
+```
+
