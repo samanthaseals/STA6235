@@ -1,3 +1,5 @@
+library(tidyverse)
+
 # enter data
 
 # predictor values
@@ -30,6 +32,7 @@ XtY <- t(X) %*% Y
 
 # find b = inv(X'X) * X'Y
 b <- solve(t(X)%*%X) %*% t(X)%*%Y
+b <- solve(XtX) %*% XtY
 
 # find y hat
 pred <- X%*%b
@@ -55,14 +58,20 @@ SST <- SSR + SSE
 MSR <- SSR/(ncol(X)-1)
 MSE <- SSE*(1/(nrow(X)-(ncol(X)-1)-1))
 
-F = MSR / MSE
+F <- MSR / MSE
 
 # find variances of b estimates
 s2_b <- as.numeric(MSE) * solve(XtX) 
 
+# want to create vector of t-values
+t <- c(b[1] / sqrt(s2_b[1,1]), b[2] / sqrt(s2_b[2,2]))
+
+# find p-values corresponding to the t-values
+p <- 2*pt(q = abs(t), df = nrow(X), lower.tail = FALSE)
+
 # estimating 
 Xh <- t(c(1, 65))
 
-Yhat_h <- t(Xh) * b
+Yhat_h <- Xh %*% b
 
-s2_Yhat_h = MSE *  (Xh %*% solve(XtX) %*% t(Xh))
+s2_Yhat_h <- MSE *  (Xh %*% solve(XtX) %*% t(Xh))
