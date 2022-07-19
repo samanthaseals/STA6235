@@ -35,21 +35,53 @@ cor(one[,2:4])
 # how to run tests using full and reduced models
 # goal: compare y ~ x1 + x2 + x3 to y ~ x1
 
+# remove x2 and x3 at the same time
 full <- lm(y ~ x1 + x2 + x3, data=one) # Full Model
 reduced <- lm(y ~ x1, data=one) # Reduced model
 
-out <- anova(reduced, full)
+anova(reduced, full)
 
-# check values
-# anova(full)
-# anova(reduced)
+#########################################################
+# reproduce the individual t-tests as F-tests
+# type III sums of squares
+full <- lm(y ~ x1 + x2 + x3, data=one) # Full Model
+summary(full)
+
+# x1 alone
+pred1 <- lm(y ~ x2 + x3, data=one) # Reduced model
+anova(pred1, full)
+
+# x2 alone
+pred2 <- lm(y ~ x1 + x3, data=one) # Reduced model
+anova(pred2, full)
+
+# x3 alone
+pred3 <- lm(y ~ x1 + x2, data=one) # Reduced model
+anova(pred3, full)
+#########################################################
 
 
+#########################################################
+# added in order
 
+full <- lm(y ~ x1 + x2 + x3, data=one) # Full Model
+summary(full)
 
+# intercept only model
+m0 <- lm(y ~ 1, data = one)
+summary(m0)
 
+# just x1
+m1 <- lm(y ~ x1, data = one)
+anova(m0, m1) # gives SSR for just x1
 
+# x2 after x1
+m2 <- lm(y ~ x1 + x2, data = one)
+anova(m1, m2) # gives SSR for x2 after x1
 
+# x3 after x2, x1
+m3 <- lm(y ~ x1 + x2 + x3, data = one)
+anova(m2, m3) # gives SSR for x3 after x1 and x2
 
 
 
