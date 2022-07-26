@@ -1,5 +1,5 @@
 ---
-title: "Example - Ice Cream Ratings"
+title: "Q11 Replacement - Ice Cream Ratings Example"
 output: html_document
 ---
 
@@ -37,11 +37,7 @@ data <- dummy_cols(data, select_columns = c("Sweetner", "MilkFat", "Air"))
 #### Construct the Model with All Main Effects
 
 ```{r}
-m <- lm(Ratings ~ Sweetner_12 + MilkFat_12 + MilkFat_15 + Air_10 + Air_15, data = data)
 
-m <- lm(Ratings ~ Sweetner + Air + MilkFat, data = data)
-
-summary(m)
 ```
 
 #### Is Sweetner a Significant Predictor of Sensory Rating?
@@ -52,15 +48,11 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
@@ -72,15 +64,11 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
@@ -92,23 +80,41 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
 ## Visualization - Categorical Predictors Only
 
+We have a model with three categorical predictors.
+
+Ratings will go on the *Y*-axis. This is always the outcome of interest.
+
+Milk fat will go on the *X*-axis. This should be something we can treat as continuous; if you have multiple to choose from, choose the one with the most categories.
+
+We can combine the other two predictors (air and sweetener) to create lines:
+- Air 5, Sweetener 12
+- Air 5, Sweetener 16
+- Air 10, Sweetener 12
+- Air 10, Sweetener 16
+- Air 15, Sweetener 12
+- Air 15, Sweetener 16
+
+```{r}
+
+```
+
 ## Continuous Predictors
 
 #### Construct the Model with All Main Effects
+
+```{r}
+
+```
 
 #### Is Sweetner a Significant Predictor of Sensory Rating?
 
@@ -118,15 +124,11 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
@@ -138,15 +140,11 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
@@ -158,15 +156,11 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
@@ -180,17 +174,17 @@ summary(m)
 
 #### Testing the Three-Way Interaction Between Sweetner, Milk Fat, and Air
 
-**Hypotheses**
+```{r}
 
+```
+
+**Hypotheses**
 
 **Test Statistic**
 
-
 ***p*-value**
 
-
 **Rejection Region**
-
 
 **Conclusion and Interpretation**
 
@@ -204,18 +198,13 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
 
-
 **Conclusion and Interpretation**
-
 
 #### Remove the Three-Way Interaction
 
@@ -224,7 +213,7 @@ summary(m)
 ```
 
 
-#### Test Significance of All Interaction Terms
+#### Test Significance of All (Two-Way) Interaction Terms
 
 ```{r}
 
@@ -232,18 +221,13 @@ summary(m)
 
 **Hypotheses**
 
-
 **Test Statistic**
-
 
 ***p*-value**
 
-
 **Rejection Region**
 
-
 **Conclusion and Interpretation**
-
 
 #### Examining All Two-Way Interactions
 
@@ -271,7 +255,7 @@ Is there anything else we can remove?
 
 ## Visualization - Interaction
 
-We now will construct a visualization. First, we must decide what goes where on the graph. Let's put milk fat on the *x* axis and create lines with air. Let's remind ourselves of the levels of air:
+We now will construct a visualization. First, we must decide what goes where on the graph. Let's put milk fat on the *X*-axis and create lines with air. Let's remind ourselves of the levels of air:
 
 ```{r}
 
@@ -295,9 +279,9 @@ Now we are ready to graph,
 
 ```
 
-We can see that as milk fat increases...
+We can see that as milk fat increases... [what happens?]
 
-We can also examine this the other way, with air on the *x*-axis and milk fat defining the lines. Let's look at the levels of milk fat.
+We can also examine this the other way, with air on the *X*-axis and milk fat defining the lines. Let's look at the levels of milk fat.
 
 ```{r}
 
@@ -315,4 +299,4 @@ Now we are ready to graph,
 
 ```
 
-We can see that as air increases....
+We can see that as air increases.... [what happens?]
