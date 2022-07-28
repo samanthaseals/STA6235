@@ -314,10 +314,6 @@ m4 <- lm(Ratings ~ Sweetner2 + MilkFat2 + Air2 +
 **Conclusion and Interpretation**
 
 #### Examining All Two-Way Interactions
-
-```{r}
-
-```
  
 Can we remove the non-significant interactions at the same time?
 
@@ -339,23 +335,7 @@ Is there anything else we can remove?
 
 ## Visualization - Interaction
 
-We now will construct a visualization. First, we must decide what goes where on the graph. Let's put milk fat on the *X*-axis and create lines with air. Let's remind ourselves of the levels of air:
-
-```{r}
-
-```
-
-We will use levels 5, 10, and 15 in our predictions. Note that if this were truly a continuous variable, we would want to look at the 25th percentile, the median, and the 75th percentile. 
-
-```{r}
-
-```
-
-We also will color our observations on the graph by the level of sweetner. We first need to turn it back into a factor variable,
-
-```{r}
-
-```
+We now will construct a visualization. First, we must decide what goes where on the graph. Let's put milk fat on the *X*-axis and create lines with air. We will use levels 5, 10, and 15 in our predictions. We also will color our observations on the graph by the level of sweetner. 
 
 Now we are ready to graph,
 
@@ -365,17 +345,7 @@ Now we are ready to graph,
 
 We can see that as milk fat increases... [what happens?]
 
-We can also examine this the other way, with air on the *X*-axis and milk fat defining the lines. Let's look at the levels of milk fat.
-
-```{r}
-
-```
-
-We will use levels 10, 12, and 15 in our predictions. Like we noted for air, if this were truly a continuous variable, we would want to look at the 25th percentile, the median, and the 75th percentile.
-
-```{r}
-
-```
+We can also examine this the other way, with air on the *X*-axis and milk fat defining the lines. We will use levels 10, 12, and 15 in our predictions. Like we noted for air, if this were truly a continuous variable, we would want to look at the 25th percentile, the median, and the 75th percentile.
 
 Now we are ready to graph,
 
