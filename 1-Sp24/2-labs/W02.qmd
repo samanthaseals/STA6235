@@ -1,0 +1,89 @@
+---
+title: "STA6235 Week 2"
+author: "Your Name Here"
+format: 
+  html:
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+editor: source
+---
+
+**1. Pull in the [Palmer penguins dataset](https://allisonhorst.github.io/palmerpenguins/).**
+
+```{r}
+
+```
+
+**2. Find the mean and standard deviation for the body mass of penguins (*body_mass_g*). Please use the `summarize()` function from `tidyverse`.**
+
+```{r}
+
+```
+
+**3. Find the mean and standard deviation for the body mass of penguins (*body_mass_g*), split by species of penguin (*species*). Please use the `group_by()` and `summarize()` functions from `tidyverse`.**
+
+```{r}
+
+```
+
+**4. Construct 95% confidence intervals for the body mass of penguins (*body_mass_g*) for each species of penguin (*species*).**
+
+```{r}
+
+```
+
+**5. Construct a scatterplot with body mass (*body_mass_g*) on the *y*-axis, flipper length (*flipper_length_mm*) on the *x*-axis, and the markers (dots) colored by species of penguin (*species*).**
+
+```{r}
+
+```
+
+**6. Model penguin body mass (*body_mass_g*) as a function of flipper length (*flipper_length_mm*) and bill length (*bill_length_mm*). Remember to state the resulting regression model.**
+
+```{r}
+
+```
+
+**7. Create a table that has Estimate (95% CI) and *p*-Value as columns; every predictor in the regression model will have a row. See [Table 2 in this paper](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4742426/) for an example.**
+
+<!-- Hint: tablesgenerator.com is wonderful for helping us create tables! Either markdown or HTML tables will work. There is more flexibility with HTML tables in terms of formatting :) -->
+
+```{r}
+
+```
+
+**8. Use the appropriate hypothesis test to determine if this is a significant regression line. Test at the $\alpha=0.05$ level. Remember to typeset your results.**
+
+```{r}
+
+```
+
+**9. Use the appropriate hypothesis test(s) to determine which, if any, are significant predictors of penguin body mass. Test at the $\alpha=0.05$ level. Remember to typeset your results.**
+
+**10. Create a data visualization for your regression model. Use the plot in question 5 as a starting point and overlay a regression line. (This means that only flipper length will vary and you will need to hold bill length constant.)**
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

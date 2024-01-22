@@ -1,0 +1,444 @@
+---
+title: "Introduction to R and Quarto"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Today, we will discuss R programming in broad strokes.
+
+    - It is, unfortunately, impossible for me to teach you everything you need to know about R.
+    
+    - My goal is to give you the building blocks and build your confidence.
+
+- Today's lecture is taken from the following:
+
+    - [R for Data Science](https://r4ds.hadley.nz/) by  Wickham, Çetinkaya-Rundel, and Grolemund
+    
+    - [Statistical Inference via Data Science: A ModernDive into R and the Tidyverse](https://moderndive.com/index.html) by Ismay and Kim
+    
+- There are lots of resources out there on R!
+
+    - My process: Google the thing I want to do with either "R" or "tidyverse" 
+    
+        - e.g., "create new variable tidyverse" or "logistic regression R"
+        
+    - [Posit cheatsheets](https://posit.co/resources/cheatsheets/) (free!) are also helpful.
+
+## Analysis Process {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L2-a.png" width = 1300>^[[Teaching the tidyverse in 2023](https://www.tidyverse.org/blog/2023/08/teach-tidyverse-23/) by Mine Çetinkaya-Rundel.]</center>
+
+## R functions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- There are many functions that live in "base R"
+
+- If we want to use other functions, we need to call in the package they're stored in
+
+::: {.panel-tabset}
+
+## before `library(tidyverse)`
+```{r}
+#| error: true
+mtcars %>% summarize(mean_mpg = mean(mpg), sd_mpg = sd(mpg))
+```
+
+## after `library(tidyverse)`
+```{r}
+library(tidyverse)
+mtcars %>% summarize(mean_mpg = mean(mpg), sd_mpg = sd(mpg))
+```
+
+:::
+ 
+- Note that you only need to call a package in once.
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- I most often get data in .csv or .xlsx format
+
+    - .csv $\to$ `read_csv()` from `readr`
+    - .xlsx $\to$ `read_xlsx()` from `readxl`
+    
+- When sharing with other people, I've found Google Sheets are easy
+
+    - Okay dealing with authentication $\to$ `read_sheet()` from `googlesheets4`
+    - Don't want to deal with authentication $\to$ `gsheet2tbl()` from `gsheet`
+
+- Occasionally I get data for a specific analysis program
+
+    - .sas7bdat $\to$ `read_sas()` from `haven`
+    - .sav $\to$ `read_spss()` from `haven`
+    - .dta $\to$ `read_dta()` from `haven`
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Google Sheet Example
+
+::: {.panel-tabset}
+
+- Looking at an example created with Operation and volunteer students,
+
+## call in data
+```{r}
+library(gsheet)
+surgery <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1roCT2mtO-k28YV9k7ueLzpCrZ3tN4c08UhZmPzJTZfw/edit?usp=sharing")
+```
+
+## check it
+```{r}
+head(surgery, n = 5)
+```
+
+:::
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- .csv Example
+
+::: {.panel-tabset}
+
+## call in data
+
+- Let's consider the sauce data from Hot Ones,
+
+```{r}
+sauces <- read_csv("https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-08/sauces.csv")
+```
+
+## check it
+```{r}
+head(sauces, n = 5)
+```
+
+:::
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L2-b.png" width = 1100></center>
+
+## Data: RStudio vs. Quarto Document {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+<center><img src = "images/W01-L2-c.png" width = 1100></center>
+
+## Data: RStudio vs. Quarto Document {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+<center><img src = "images/W01-L2-d.png" width = 1100></center>
+
+## Summary Statistics {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- We can use the [`summarize()`](https://dplyr.tidyverse.org/reference/summarise.html) function to request a [tibble](https://r4ds.had.co.nz/tibbles.html) of summary statistics.
+
+::: {.panel-tabset}
+
+#### print output
+```{r}
+sauces %>% 
+  summarize(mean = mean(scoville),
+            sd = sd(scoville),
+            median = median(scoville),
+            iqr = IQR(scoville))
+```
+
+#### save output
+```{r}
+sauces_summary <- sauces %>% 
+  summarize(mean = mean(scoville),
+            sd = sd(scoville),
+            median = median(scoville),
+            iqr = IQR(scoville))
+```
+
+#### print *and* save output
+```{r}
+(sauces_summary <- sauces %>% 
+  summarize(mean = mean(scoville),
+            sd = sd(scoville),
+            median = median(scoville),
+            iqr = IQR(scoville)))
+```
+
+:::
+
+## Summary Statistics {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- We can use the [`group_by()`](https://dplyr.tidyverse.org/reference/group_by.html) function to request summary statistics by group(s).
+
+```{r}
+sauces_summary <- sauces %>%
+  group_by(sauce_number) %>%
+  summarize(mean = mean(scoville),
+            sd = sd(scoville),
+            median = median(scoville), 
+            iqr = IQR(scoville))
+```
+
+```{r}
+#| echo: false
+head(sauces_summary, n=3)
+```
+
+## Summary Statistics {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- We can use the [`group_by()`](https://dplyr.tidyverse.org/reference/group_by.html) function to request summary statistics by group(s).
+
+```{r}
+sauces_summary <- sauces %>%
+  group_by(season) %>%
+  summarize(mean = mean(scoville),
+            sd = sd(scoville),
+            median = median(scoville), 
+            iqr = IQR(scoville))
+```
+
+```{r}
+#| echo: false
+head(sauces_summary, n=3)
+```
+
+## Summary Statistics {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let's now look at the episode data for Hot Ones,
+
+::: {.panel-tabset}
+
+## call in the data
+
+```{r}
+episodes <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2023/2023-08-08/episodes.csv')
+```
+
+## check it
+
+```{r}
+head(episodes)
+```
+
+:::
+
+## Summary Statistics {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- We can use the [`summarize()`](https://dplyr.tidyverse.org/reference/summarise.html) function to request a [tibble](https://r4ds.had.co.nz/tibbles.html) of summary statistics.
+
+```{r}
+ep_summary <- episodes %>%
+  group_by(season, finished) %>%
+  summarise(n = n()) %>%
+  mutate(freq = n / sum(n))
+
+head(ep_summary, n = 4)
+```
+
+## Graphs {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Recall the summary statistics by sauce number,
+
+```{r}
+sauces_summary <- sauces %>%
+  group_by(sauce_number) %>%
+  summarize(mean = mean(scoville),
+            sd = sd(scoville),
+            median = median(scoville), 
+            iqr = IQR(scoville))
+```
+
+```{r}
+#| echo: false
+head(sauces_summary, n=3)
+```
+
+## Graphs {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let's explore the centrality of the Scoville heat units of the sauces.
+
+::: {.panel-tabset}
+
+## ggplot code
+
+```{r}
+#| eval: false
+
+sauces_summary %>% 
+  ggplot(aes(x = as.factor(sauce_number), y = mean)) +
+    geom_point(size = 2) + 
+    labs(x = "Sauce Number",
+         y = "Mean Scoville Heat Units") +
+    theme_bw()
+```
+
+## resulting graph
+
+<center>
+```{r}
+#| echo: false
+
+sauces_summary %>% 
+  ggplot(aes(x = as.factor(sauce_number), y = mean)) +
+    geom_point(size = 2) + 
+    labs(x = "Sauce Number",
+         y = "Mean Scoville Heat Units") +
+    theme_bw()
+```
+</center>
+
+## wait a minute...
+
+- ... [Da Bomb Beyond Insanity](https://peppergeek.com/da-bomb-hot-sauce-review/) is always the 8th sauce ...
+
+- ... but it doesn't appear much hotter than the previous sauces ...
+
+<center>
+<img src="https://media.tenor.com/VCAF9CoXgWoAAAAC/what-do-you-mean-hot-ones.gif">
+</center>
+
+## explore more (code)
+
+```{r}
+#| eval: false
+
+sauces %>%
+  filter(sauce_number == 8) %>%
+  ggplot(aes(y = scoville, x = as.factor(season))) + 
+    geom_point() + 
+    labs(x = "Season Number",
+         y = "Scoville Heat Units") +
+    theme_bw()
+```
+
+## explore more (graph)
+
+<center>
+```{r}
+#| echo: false
+
+sauces %>%
+  filter(sauce_number == 8) %>%
+  ggplot(aes(y = scoville, x = as.factor(season))) + 
+    geom_point() + 
+    labs(x = "Season Number",
+         y = "Scoville Heat Units") +
+    theme_bw()
+```
+</center>
+
+:::
+
+
+## Graphs {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let's explore the proportion of guests that finish the wing series.
+
+::: {.panel-tabset}
+
+## ggplot code
+
+```{r}
+#| eval: false
+
+ep_summary %>% 
+  filter(finished == TRUE) %>%
+  ggplot(aes(x = as.factor(season), y = freq)) +
+    geom_point(size = 2) +
+    labs(x = "Season",
+         y = "Proportion that Finish") +
+    theme_bw()
+```
+
+## resulting graph
+
+<center>
+```{r}
+#| echo: false
+
+ep_summary %>% 
+  filter(finished == TRUE) %>%
+  ggplot(aes(x = as.factor(season), y = freq)) +
+    geom_point(size = 2) +
+    labs(x = "Season",
+         y = "Proportion that Finish") +
+    theme_bw()
+```
+</center>
+
+## let's add some razzle dazzle
+
+<center>
+```{r}
+#| echo: false
+
+ep_summary %>% 
+  filter(finished == TRUE) %>%
+  ggplot(aes(x = as.factor(season), y = freq, color = n)) +
+    geom_point(size = 2) +
+    labs(x = "Season",
+         y = "Proportion that Finish",
+         color = "Number of Guests") +
+    theme_bw()
+```
+</center>
+
+## hmm...
+
+<center>
+```{r}
+#| echo: false
+
+episodes %>% 
+  count(season) %>%
+  ggplot(aes(x = as.factor(season), y = n)) +
+    geom_point(size = 2) + 
+    labs(x = "Season",
+         y = "Number of Guests") + 
+    geom_text(aes(x = 3, y = 40, label = "...?")) +  
+    theme_bw()
+```
+</center>
+
+:::
+
+## Wrap Up {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+<center>
+<img src = "https://media.tenor.com/VmWqyWy8kb4AAAAC/guy-fieri.gif">
+</center>
+
+- Some reminders:
+
+    - Statistician/biostatistician/data scientist first, programmer second.
+    
+    - Yes, I will challenge you on labs and projects.
+    
+        - Do not be afraid to Google!
+        
+        - Similarly, do not be afraid to ask me to verify what you find. 
+    
+    - Always remember that I want you to *learn*, which includes learning how to function within your career.
+
+- Next lecture, we will remind ourselves about linear regression and how to construct models in R.
+
+## Today's Activity {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Get familiar with Quarto!
+
+- Learn (or recall) how to do some basics in R!
+    
+- Bonus: set up a GitHub repository for your class materials.     

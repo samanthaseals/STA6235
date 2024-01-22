@@ -1,0 +1,265 @@
+---
+title: "Introduction to Technology"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Welcome to Modeling in Regression - Spring 2024!
+
+    - Canvas set up
+    - Syllabus
+    - Discord
+    - R/RStudio
+    - Quarto
+    - GitHub
+    - Resources
+    
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+    
+- Days we definitely do not have class:
+
+    - Monday, 01/15 (MLK)
+    - Monday, 01/29 (Dr. Seals traveling)
+    - Wednesday, 01/31 (Dr. Seals traveling)
+    - Monday, 03/25 (Spring Break)
+    - Wednesday 03/27 (Spring Break)
+    - Monday 04/22 (Dr. Seals traveling)
+    
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- General topics:
+
+    - General linear models (GLM) vs. generalized linear models (GzLM)
+    - Continuous vs. categorical predictors
+    - Interaction terms
+    - Linear regression
+    - Gamma regression
+    - Logistic regression
+    - Poisson regression
+    - Negative binomial regression
+    - Cross validation
+    
+- **This is an applied class.**    
+    
+## Weekly Schedule {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+    
+- **Lecture weeks:**
+
+    - Lecture Monday 
+    - Lecture Wednesday 
+    - Weekly activity due the following Monday
+    
+- **Project weeks:**
+
+    - Short meeting on Monday to introduce project
+    - No meeting on Wednesday, but I will be available to answer questions (like office hours)
+    - Project due the following Monday
+    
+- **Final Exam:**
+
+    - There will be a *proctored* and *written* final exam on Wednesday, May 1, 2024.
+    - If you are in Pensacola, the exam is 2:00-4:30 pm.
+    - If you are online, you will schedule your exam based on the guidelines from MathStat proctoring.
+    
+## Canvas Overview {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Canvas 
+
+- Syllabus
+
+- Discord
+    
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+
+- We will be using R in this course.
+
+    - I use the RStudio IDE, however, if you would like to use another IDE, that is fine.
+    
+- It is okay if you have not used R before!
+
+- Full disclosure: I am a **biostatistician** first, **programmer** second.
+
+    - This means that I focus on the application of statistical methods and not on "understanding" the innerworkings of R.
+    
+        - R is a *tool* that we use, like how SAS, JMP, Stata, SPSS, Excel, etc. are tools.
+    
+    - Sometimes my code is not elegant/efficient, and that's okay! Because our focus is on the application of methods, we are interested in the code working.
+    
+    - I have learned *so much* from my students since implementing R in the classroom.
+    
+        - Do not be afraid to teach me new things!
+        
+- **This is an applied class.**        
+        
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+
+- You can install R and RStudio on your computer for **free**.
+
+    - [R from CRAN](https://cran.r-project.org/)
+    
+    - [RStudio from Posit](https://posit.co/products/open-source/rstudio/)
+    
+- Alternative to installing: [RStudio Server](https://rstudio.hmcse.uwf.edu/) hosted by [UWF HMCSE](https://uwf.edu/hmcse/)
+
+- **Do not use Citrix.**
+
+- I encourage you to install R on your own machine if you are able.
+
+    - In the "real world," you will not have access to the server. 
+    
+    - Installing on your own machine will help your future self troubleshoot issues.
+        
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-a.png" width = 1100></center>
+
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-b.png" width = 500></center>
+
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-c.png" width = 1100></center>
+
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-d.png" width = 1100></center>
+
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-e.png" width = 1100></center>
+
+## R/RStudio Server {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-u.png" width = 1100></center>
+
+## R/RStudio Server {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-w.png" width = 1100></center>
+
+## R/RStudio Server {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-v.png" width = 1100></center>
+
+## RStudio/Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+![](images/W01-L1-f.png){.absolute top=120 left=300 width="500"}
+
+![](images/W01-L1-g.png){.absolute top=122 left=750 width="350"}
+
+## RStudio/Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-h.png" width = 1100></center>
+
+## RStudio/Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-i.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-j.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-k.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-l.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-m.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-n.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-o.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-p.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-q.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-r.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-s.png" width = 1100></center>
+
+## Quarto on HMCSE Server {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-ai.png" width = 1100></center>
+
+## Quarto on HMCSE Server {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-aj.png" width = 1100></center>
+
+## Quarto on HMCSE Server {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-ak.png" width = 1100></center>
+
+## Quarto {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Resources! So many resources!
+
+    - [Markdown basics](https://quarto.org/docs/authoring/markdown-basics.html)
+    - [Tables Generator](https://www.tablesgenerator.com/) (click over to Markdown)
+    - [Figure out symbols in $\LaTeX$ with Detexify](https://detexify.kirelabs.org/classify.html)
+    - [Google!](https://www.google.com/search?q=how+to+change+text+color+quarto)
+    
+## R Script {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+![](images/W01-L1-f.png){.absolute top=120 left=300 width="500"}
+
+![](images/W01-L1-af.png){.absolute top=122 left=750 width="350"}
+
+## R Script {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-ag.png" width = 1100></center>
+
+## R Script {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+<center><img src = "images/W01-L1-ah.png" width = 1100></center>
+
+## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Our course lectures and labs are posted on GitHub.
+
+- Please bookmark the repository: [GitHub for STA6235](https://github.com/samanthaseals/STA6235).
+
+- You will want to look at my .qmd files for formatting / $\LaTeX$ purposes.
+
+- Feel free to poke around [my GitHub](https://github.com/samanthaseals) to see materials for other classes.
+
+
+
+
+

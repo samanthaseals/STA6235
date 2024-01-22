@@ -1,0 +1,90 @@
+---
+title: "STA6235: Week 1"
+author: "Your Name Here"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  html:
+    embed-resources: true
+editor: source
+---
+
+<!-- This is a HTML comment. It will not appear in the rendered file. -->
+
+```{r example}
+# this is a R comment. it will show in the rendered file when the chunk is set to display
+# for this file, we have the default chunk option set to display (controlled by the `echo` option in the yaml)
+
+# this differently colored section is called a code chunk
+# we can add code chunks using the green button with a C on it in the toolbar
+# we can also add code chunks using a keyboard shortcut.
+
+# at the beginning of the chunk, we told the file that it needs to use R to analyze what is here
+# we also gave the chunk a name; you can see the chunks and their names at the bottom of this panel
+```
+
+```{r no_show}
+#| echo: false # this is a chunk option
+# by setting echo to false, we are telling Quarto to suppress this code chunk in the output
+```
+
+```{r setup}
+library(tidyverse)
+# if the above line throws an error, remove the # from the next line and run it
+# install.packages("tidyverse")
+# once library(tidyverse) works, delete the commented section here
+# leaving certain commands in a .qmd file will keep it from rendering properly
+# view(dataframe) is another one that will prevent rendering
+```
+
+**1. What is your name? Change the font color to be your favorite color. Note: this is asking for you to write HTML code. It is *not* R code.**
+
+Dr. Seals
+
+**2. Is there a nickname you go by that you would like to go by in the classroom? Change the font to be Italicized.**
+
+Dr. Seals
+
+**3. What are your career goals after you are finished with the program? Change the font to be underlined.**
+
+When I was in your shoes (finishing a master's degree here at UWF), I knew I wanted to teach at the university level... so going after a PhD was my next step. I was fortunate to be able to choose between programs in mathematics, statistics, and biostatistics.
+
+**4. What questions do you have about this course? Write them using an enumerated list.**
+
+Insert your answers here :)
+
+**5. What is the keyboard shortcut to render this file?**
+
+Insert your answer here :)
+
+**6. Render this file using the keyboard shortcut and tell me where the resulting .html file saved to.**
+
+Insert your answer here :)
+
+**7. What is the keyboard shortcut to add a code chunk?**
+
+Insert your answer here :)
+
+Insert code chunk here. Add your favorite animal as a comment inside of the chunk.
+
+**8. What is the keyboard shortcut to run a single line within a code chunk?**
+
+Insert your answer here :)
+
+**9. Import the dataset located on Canvas.**
+
+Insert your answer here :)
+
+**10. Find an interesting (to you!) dataset from [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday) and import it here.**
+
+Insert your answer here :)
+
+**11. Use functions within `tidyverse` to find an appropriate summary statistic for one variable in the dataset. Hint: Dr. Google is your friend! Try searching "summary statistic tidyverse".**
+
+Insert your answer here :)
+
+**12. Bonus! Use `ggplot()` to construct a visualization relevant to the dataset.**
+
+Insert your answer here :)
