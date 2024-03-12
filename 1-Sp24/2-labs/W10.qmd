@@ -1,0 +1,85 @@
+---
+title: "STA6235 Week 10"
+author: "Your Name Here"
+format: 
+  html:
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+editor: source
+---
+
+This week we will re-analyze the political data used in class.
+
+**1. Import the data.**
+
+```{r}
+
+```
+
+**2. Remove the outlier as discovered in lecture.**
+
+```{r}
+
+```
+
+**3. Recreate the model from lecture using Poisson regression.**
+
+```{r}
+
+```
+
+**4. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and year is significant. Test at the** $\alpha=0.05$ **level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**5. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and region is significant. Test at the** $\alpha=0.05$ **level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**6. Stratify the resulting models into models for the year 1983 and, separately, the year 2012. Note: you do not have to use R for this.**
+
+
+
+**7. State and check the assumptions of Poisson regression.**
+
+```{r}
+
+```
+
+**8. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and year is significant. Test at the** $\alpha=0.05$ **level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**9. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and region is significant. Test at the** $\alpha=0.05$ **level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**10. Stratify the resulting models into models for the year 1983 and, separately, the year 2012. Note: you do not have to use R for this.**
+
+## Combined Questions
+
+**11. Pick a model from either question 6 or 10 provide interpretations for the IRRs.**
+
+```{r}
+
+```
+
+**12. Compare your models side by side. Are you drawing different conclusions? Is the overall message conveyed with the model different?**
+
+**13. Create a visualization for either the Poisson or negative binomial model. Create lines for southern republicans and democrats. Have the year on the $x$-axis.**
+
+```{r}
+
+```

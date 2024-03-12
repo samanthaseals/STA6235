@@ -1,0 +1,54 @@
+---
+title: "STA6235 Week 6"
+author: "Your Name Here"
+format: 
+  html:
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+editor: source
+---
+
+**1. Import the JHS data. (This is in Week 1's module on Canvas.)**
+
+```{r}
+
+```
+
+**2. Professional development (data management): Create a variable called *smoking* that combines *currentSmoker* (1 = current smoker, 0 = not current smoker) and *everSmoker* (1 = has smoked at least 200 cigarettes in their lifetime, 0 = has not smoked more than 200 cigarettes) into a three level variable, where 1 = current smoker, 2 = former smoker, 3 = never smoker.**
+
+```{r}
+
+```
+
+**3. Using the normal distribution, model HbA1c (*HbA1c*) as a function of age (*age*), waist circumference (cm; *waist*), hypertension medication use (*BPmeds*; 1 = takes blood pressure lowering medication, 0 = does not take blood pressure lowering drugs), smoking status (*smoking*), the interaction between age and hypertension medication use, and the interaction between age and smoking status. Remember to report the final model.**
+
+```{r}
+
+```
+
+**4. Provide appropriate interpretations for the slopes in the above model for someone with *age* = 45. Algebraically simplify the model so that you can interpret the main effects, skipping the interpretation for age.**
+
+
+
+**5. Using the gamma distribution, model HbA1c (*HbA1c*) as a function of age (*age*), waist circumference (cm; *waist*), hypertension medication use (*BPmeds*; 1 = takes blood pressure lowering medication, 0 = does not take blood pressure lowering drugs), smoking status (*smoking*), the interaction between age and hypertension medication use, and the interaction between age and smoking status. Remember to report the final model.**
+
+
+
+**6. Provide appropriate interpretations for the slopes in the above model for someone with *age* = 45. Algebraically simplify the model so that you can interpret the main effects, skipping the interpretation for age.**
+
+
+
+**7. Assess the relevant assumptions to determine if gamma regression is necessary. Remember to draw a conclusion (in words).**
+
+```{r}
+
+```
+
+
+
+
+

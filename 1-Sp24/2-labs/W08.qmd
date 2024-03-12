@@ -1,0 +1,81 @@
+---
+title: "STA6235 Week 8"
+author: "Your Name Here"
+format: 
+  html:
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+editor: source
+---
+
+This week we will use the [Scooby Doo episode data](https://github.com/rfordatascience/tidytuesday/tree/718b0cd36672e14457f15cba7f061c4cf7caf9f6/data/2021/2021-07-13). If you are not familiar with Scooby Doo, [you can read about it on Wikipedia](https://en.wikipedia.org/wiki/Scooby-Doo).
+
+**1. Import the data.**
+
+```{r}
+
+```
+
+**2. Create a variable that indicates if the culprit was caught by either Scooby or Shaggy. Hint: this involves *caught_scooby* and *caught_shaggy*... you will also want to use the `if_else()` function.**
+
+```{r}
+
+```
+
+**3. Create a variable that is the count of number of times either "zoinks!" or "jeepers!" said in the show. Hint: this involves *zoinks* and *jeepers*.**
+
+```{r}
+
+```
+
+**4. Model if the culprit was caught by either Scooby or Shaggy (the variable you created in Q2) as a function of the number of times either "zoinks!" or "jeepers!" was said on the show (the variable you created in Q3), if Scrappy Doo was in the episode (*scrappy_doo*), and the number of snacks eaten during the episode (*number_of_snacks*). Remember to typeset your model.**
+
+```{r}
+
+```
+
+**5. Find the odds ratios for the model in Q4.**
+
+```{r}
+
+```
+
+**6. Find the 95% confidence intervals for the odds ratios found in Q5.**
+
+```{r}
+
+```
+
+**7. Provide brief interpretations for the odds ratios found in Q5.**
+
+
+
+**8. Is this a significant regression line? Test at the $\alpha=0.05$ level. You do not need to typeset your results, but you must provide statistical justification (in writing, not R output).**
+
+```{r}
+
+```
+
+**9. Which, if any, are significant predictors of if the culprit was caught by either Scooby or Shaggy? Test at the $\alpha=0.05$ level. You do not need to typeset your results, but you must provide statistical justification (in writing, not R output).**
+
+```{r}
+
+```
+
+**10. Construct a data visualization to help you explain model results.**
+
+```{r}
+
+```
+
+
+
+
+
+
+
+

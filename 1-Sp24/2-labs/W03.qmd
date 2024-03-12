@@ -1,0 +1,108 @@
+---
+title: "STA6235 Week 3"
+author: "Your Name Here"
+format: 
+  html:
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+editor: source
+---
+
+```{r setup}
+library(gsheet)
+library(tidyverse)
+
+icecream <- gsheet2tbl("https://docs.google.com/spreadsheets/d/1QH5XDEUEmBGp2ZzO7OQS0T1vSELIjFAi2gTmnqokoMg/edit#gid=0") %>%
+  mutate(Sweetner = as.numeric(str_remove(Sweetner, "[%]")),
+         MilkFat = as.numeric(str_remove(MilkFat, "[%]")),
+         Air = as.numeric(str_remove(Air, "[%]")))
+```
+
+**Commercially produced ice cream is made from a mixture of ingredients: a minimum of 10% milk fat, 9—12% milk solids, 12—16% sweetener, 0.2—0.5% stabilizers and emulsifiers, and 55—64% water. Air is incorporated with the above ingredients during the mixing process. The finest ice creams have between 3% and 15% air.**
+
+**A food scientist is investigating how varying the amounts of the above ingredients impacts the sensory rating of the final product (*Ratings*). The scientist decides to use three levels of milk fat (*MilkFat*): 10%, 12%, and 15%; three amounts of air (*Air*): 5%, 10%, 15%; and two levels of sweeteners (*Sweetner*): 12%, 16%.**
+
+**1. Model ice cream ratings (*Ratings*) as a function of milk fat (*MilkFat*), air (*Air*), and sweetener (*Sweetner*). Treat the predictors as continuous variables. Remember to state (typeset) your model.**
+
+```{r}
+
+```
+
+**1a. Is this a significant regression line? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**1b. Is milk fat a significant predictor? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**1c. Is air a significant predictor? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**1d. Is sweetener a significant predictor? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**1e. Provide brief interpretations for the slopes in your model.**
+
+**2. Model ice cream ratings (*Ratings*) as a function of milk fat (*MilkFat*), air (*Air*), and sweetener (*Sweetner*). Treat the predictors as categorical variables. Remember to state (typeset) your model.**
+
+```{r}
+
+```
+
+**2a. Is this a significant regression line? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**2b. Is milk fat a significant predictor? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**2c. Is air a significant predictor? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**2d. Is sweetener a significant predictor? Remember to typeset your results.**
+
+```{r}
+
+```
+
+**2e. Provide brief interpretations for the slopes in your model.**
+
+
+
+**3. Write a paragraph to summarize the analyses in questions 1 and 2. Would you recommend using continuous or categorical predictors? Why?**
+
+
+
+
+
+
+
+
+
+
+
+
+

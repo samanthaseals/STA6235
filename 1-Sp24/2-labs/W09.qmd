@@ -1,0 +1,92 @@
+---
+title: "STA6235 Week 9"
+author: "Your Name Here"
+format: 
+  html:
+    self-contained: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+editor: source
+---
+
+This week we will re-analyze the political data used in class.
+
+**1. Import the data.**
+
+```{r}
+
+```
+
+**2. Using ordinal logistic regression, model political ideology as a function of party affiliation, sex, and the interaction between the two. Remember to typeset the resulting models.**
+
+```{r}
+
+```
+
+**3. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and sex is significant. Test at the $\alpha=0.05$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**4. Stratify the resulting models into models for republicans and, separately, democrats. Note: you do not have to use R for this.**
+
+
+
+**5. Provide an interpretation for the odds ratio for sex.**
+
+
+
+**6. Use the appropriate hypothesis test to determine if it is appropriate for us to use ordinal logistic regression. i.e., do we meet the assumption necessary to use ordinal logistic? Test at the $\alpha=0.05$ level. You do not need to formally typeset the results, however, please write a sentence with your conclusion based on the test. You must justify why we can or cannot use ordinal logistic regression with this model.**
+
+```{r}
+
+```
+
+**7. Using nominal logistic regression, model political ideology as a function of party affiliation, sex, and the interaction between the two. Remember to typeset the resulting models.**
+
+```{r}
+
+```
+
+**8. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and sex is significant at the global level. Test at the $\alpha=0.05$ level. Remember to typeset the results.**
+
+```{r}
+
+```
+
+**9. Use the appropriate hypothesis test(s) to determine if the interaction between party affiliation and sex is significant at the model level. Test at the $\alpha=0.05$ level. Due to the number of models, you do not need to formally typeset the results, *however*, you must provide a summary (see below).**
+
+```{r}
+
+```
+
+- Liberal vs. Very Liberal: yes or no <!--- Please state significance (or not) ---> ($p = \text{insert $p$-value}$) <!--- Please delete the \text{} portion and just insert your p-value --->
+- Moderate vs. Very Liberal: yes or no <!--- Please state significance (or not) ---> ($p = \text{insert $p$-value}$) <!--- Please delete the \text{} portion and just insert your p-value --->
+- Conservative vs. Very Liberal: yes or no <!--- Please state significance (or not) ---> ($p = \text{insert $p$-value}$) <!--- Please delete the \text{} portion and just insert your p-value --->
+- Very Conservative vs. Very Liberal: yes or no <!--- Please state significance (or not) ---> ($p = \text{insert $p$-value}$) <!--- Please delete the \text{} portion and just insert your p-value --->
+
+**10. Stratify the resulting models into models for republicans and, separately, democrats. Note: you do not have to use R for this.**
+
+
+
+**11. Pick one model from question 9 and provide an interpretation for the odds ratio for sex.**
+
+
+
+## Putting the Two Together
+
+**12. Compare your models side by side. Are you drawing different conclusions? Is the overall message conveyed with the model different?**
+
+
+
+## Bonus
+
+**Create a visualization for either the ordinal model or the multinomial model -- something that would help you explain results to others. This is asking you to stretch your brain. I do not have a specific graph in mind for this.**
+
+
+
+
