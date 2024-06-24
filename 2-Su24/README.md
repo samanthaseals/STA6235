@@ -4,8 +4,8 @@ This is the repository for STA6235 - Modeling in Regression
 
 | Week | Day        | Date  | Subjects                                          | Document |
 |------|------------|-------|---------------------------------------------------|----------|
-| 1    | T          | 06/18 | Intro to RStudio and Quarto                       | [raw qmd]() |
-|      | R          | 06/20 | Modeling basics                                   | [raw qmd]() |
+| 1    | T          | 06/18 | Intro to RStudio and Quarto                       | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W01-L1-intro-to-R-and-Quarto.qmd) |
+|      | R          | 06/20 | Modeling basics                                   | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W01-L2-modeling-basics.qmd) |
 | 2    | T          | 06/25 | Categorical predictors                            | [raw qmd]() |
 |      | R          | 06/27 | Interaction terms                                 | [raw qmd]() |
 | 3    | T          | 07/02 | Assumptions, diagnostics, gamma regression        | [raw qmd]() |
