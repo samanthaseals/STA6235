@@ -1,0 +1,1089 @@
+---
+title: "Multiple Regression Assumptions and Diagnostics"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+format: 
+  revealjs:
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+```{r}
+#| echo: false
+library(classpackage)
+```
+
+- Let us now review the "checks" we will perform on our models.
+
+    - Model assumptions
+    
+    - Outliers
+    
+    - Influence
+    
+    - Leverage
+    
+    - Multicollinearity
+
+## Model Assumptions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the glm, $$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + ... \beta_k x_k + \varepsilon $$ where $\varepsilon$ is the residual error term.
+
+- Recall that the residual error is defined as $$\varepsilon = y - \hat{y}$$ where 
+
+    - $y$ is the observed value
+    
+    - $\hat{y}$ is the predicted value
+
+- The residual tells us how far away the observation is from the response surface (the predicted value).
+
+- Ordinary least squares estimation means that we have minimized the overall error.
+    
+## Model Assumptions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the regression (and ANOVA) assumptions, 
+
+$$\varepsilon \overset{\text{iid}}{\sim} N(0, \sigma^2)$$
+
+- **The assumptions are on the residual!**
+
+- What this means:
+
+    - Residuals are normally distributed
+    
+    - Distribution of residuals is centered at 0
+    
+    - Variance of residuals is some constant $\sigma^2$
+
+## Model Assumptions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We will assess the assumptions graphically.
+
+    - Constant variance: scatterplot
+    
+    - Normal distribution: q-q plot
+    
+- A package was written by a former student, [`classpackage`](https://github.com/ieb2/classpackage).
+
+    - If you **are** working on the server, the package is already installed.
+
+    - If you are **not** working on the server, you need to install the package:
+    
+```{r}
+#| eval: false
+# install.packages("devtools") - use this *only* if R tells you it can't find install_github()
+devtools::install_github("ieb2/classpackage", force = TRUE)
+```
+
+## Model Assumptions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Once installed, we call the package,
+
+```{r}
+library(classpackage)
+```
+
+- While there are several functions in this package, we are interested in the `anova_check()` function.
+
+```{r}
+#| eval: false
+m <- glm(y ~ x1 + x2 + ..., data = dataset)
+anova_check(m)
+```
+
+- This will provide the scatterplot and the q-q plot.
+
+## Data about Bee Colonies {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let us consider [data regarding honey bees in the United States](https://github.com/rfordatascience/tidytuesday/blob/master/data/2022/2022-01-11/readme.md), provided by [Tidy Tuesday](https://github.com/rfordatascience/tidytuesday/tree/master).
+
+::: {.panel-tabset}
+
+## Data
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(fastDummies)
+colony <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-11/colony.csv') %>%
+  mutate(quarter = case_when(months == "January-March" ~ "Q1", 
+                             months == "April-June" ~ "Q2",
+                             months == "July-September" ~ "Q3",
+                             months == "October-December" ~ "Q4")) %>%
+  dummy_cols(select_columns = c("quarter")) 
+head(colony, n=5)
+```
+
+## Check Months
+
+```{r}
+#| echo: false
+colony %>% count(months)
+```
+
+## Code
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(fastDummies)
+colony <- read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2022/2022-01-11/colony.csv') %>%
+  mutate(quarter = case_when(months == "January-March" ~ "Q1", 
+                             months == "April-June" ~ "Q2",
+                             months == "July-September" ~ "Q3",
+                             months == "October-December" ~ "Q4")) %>%
+  dummy_cols(select_columns = c("quarter")) %>%
+  select(quarter, year, state, colony_lost, quarter_Q1, quarter_Q2, quarter_Q3, quarter_Q4, colony_max)
+head(colony, n=5)
+```
+
+:::
+
+
+## Model Assumptions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Further, recall the model we constructed,
+
+```{r}
+m1 <- glm(colony_lost ~ quarter_Q1 + quarter_Q2 + quarter_Q3 + year + colony_max, data = colony)
+summary(m1)
+```
+
+## Model Assumptions {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Now, let's check the assumptions on the model,
+
+<center>
+```{r}
+library(classpackage)
+anova_check(m1)
+```
+</center>
+
+## Model Fit: $R^2$ {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- If we want to know how well the model fits the particular dataset at hand, we can look at the $R^2$.
+
+    - $R^2$ is the proportion of variance explained by the model.
+  
+    - Because it is a proportion, $R^2 \in [0, 1]$ and is independent of the units of $y$.
+
+- If $R^2 \to 0$, the model does not fit the data well; if $R^2 \to 1$, the model fits the data well.
+
+    - Note that if $R^2=1$, all observations fall on the response surface.
+
+$$ R^2 = \frac{\text{SSReg}}{\text{SSTot}} $$
+
+## Model Fit: $R^2$ {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Remember that we are partitioning the variability in $y$ (SSTot), which is *constant*, into two pieces:
+
+    - The variability explained by the regression model (SSReg).
+  
+    - The variability explained by outside sources (SSE).
+
+- As predictors are added to the model, we necessarily increase SSReg / decrease SSE.
+
+- We want a measure of model fit that is resistant to this fluctuation, $$R^2_{\text{adj}} = 1 - \left( \frac{n-1}{n-k-1} \right) \left( 1 - R^2 \right),$$ where $k$ is the number of predictor terms in the model.
+
+## Model Fit: $R^2$ {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We will use the `adjR2()` function from the `glmtoolbox` package to find $R^2_{\text{adj}}$.
+
+- In our example,
+
+```{r}
+library(glmtoolbox)
+(adjR2(m1))
+```
+
+## Model Diagnostics: Outliers {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Definition: data values that are much larger or smaller than the rest of the values in the dataset.
+
+- We will look at the standardized residuals, $$ e_{i_{\text{standardized}}} = \frac{e_i}{\sqrt{\text{MSE}(1-h_i)}}, $$ where
+
+    - $e_i = y_i - \hat{y}_i$ is the residual of the $i$^th^ observation
+    - $h_i$ is the leverage of the $i$^th^ observation
+    
+- If $|e_{i_{\text{standardized}}}| > 2.5 \ \to \ $ outlier.
+
+- If $|e_{i_{\text{standardized}}}| > 3 \ \to \ $ extreme outlier.
+
+## Model Diagnostics:  Outliers {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We will use the `rstandard()` function to find the residuals.
+
+- For ease of examining in large datasets, we will use it to create a "flag."
+
+```{r}
+#| eval: false
+dataset <- dataset %>%
+  mutate(outlier =  if_else(abs(rstandard(m))>2.5, "Suspected", "Not Suspected"))
+```
+
+- We can count the number of outliers,
+
+```{r}
+#| eval: false
+dataset %>% count(outlier)
+```
+
+- We can just look at outliers from the dataset,
+
+```{r}
+#| eval: false
+new_dataset <- dataset %>% 
+  filter(outlier == TRUE)
+```
+
+- We can also exclude outliers from the dataset,
+
+```{r}
+#| eval: false
+new_dataset <- dataset %>% 
+  filter(outlier == FALSE)
+```
+
+## Model Diagnostics:  Outliers {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's check for outliers in our example data,
+
+```{r}
+#| error: true
+colony <- colony %>% 
+  mutate(outlier =  if_else(abs(rstandard(m1))>2.5, "Suspected", "Not Suspected"))
+```
+
+- Oops! We have missing data, so R does not like our request.
+
+## Model Diagnostics:  Outliers {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's check for outliers in our example data,
+
+::: {.panel-tabset}
+
+## Model 1
+
+```{r}
+summary(m1)
+```
+
+## Complete Case
+
+```{r}
+#| error: true
+colony2 <- colony %>%
+  select(colony_lost, quarter_Q1, quarter_Q2, quarter_Q3, year, colony_max) %>%
+  na.omit()
+```
+
+## Model 2
+
+```{r}
+m2 <- glm(colony_lost ~ quarter_Q1 + quarter_Q2 + quarter_Q3 + year + colony_max, data = colony2)
+summary(m2)
+```
+
+## Outliers
+```{r}
+colony2 <- colony2 %>% 
+  mutate(outlier =  if_else(abs(rstandard(m2))>2.5, "Suspected", "Not Suspected"))
+head(colony2, n = 3)
+```
+
+:::
+
+## Model Diagnostics:  Outliers {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's investigate further.
+
+::: {.panel-tabset}
+
+## Count of Outliers
+
+- How many data points are outliers?
+
+```{r}
+colony2 %>% count(outlier)
+```
+
+- There are 32 outliers (as defined by the residual $\ge$ 2.5)
+
+## Graph of Outliers
+
+<center>
+```{r}
+#| echo: false
+colony2 %>% ggplot(aes(x = colony_max, y = colony_lost, color = outlier)) +
+  geom_point() + 
+  scale_color_manual(values = c("#999999", "#000000")) +
+  labs(x = "Total Colonies", y = "Colonies Lost", color = "Outlier") +
+  theme_bw()
+```
+</center>
+
+## Code for Graph
+
+```{r}
+#| eval: false
+colony2 %>% ggplot(aes(x = colony_max, y = colony_lost, color = outlier)) +
+  geom_point() + 
+  scale_color_manual(values = c("#999999", "#000000")) +
+  labs(x = "Total Colonies", y = "Colonies Lost", color = "Outlier") +
+  theme_bw()
+```
+
+:::
+
+## Model Diagnostics:  Leverage and Influential Points {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- A leverage point is defined as follows:
+
+    - A point for which $x_i$ is far from the other values. 
+
+- An influential point is defined as follows:
+
+    - A point that significantly affects the regression model. 
+
+- We check these *together* using Cook's distance.
+
+    - We will look for "spikes" in the plot.
+
+- We will use the `cooks()` function from the `classpackage` package.
+
+```{r}
+#| eval: false
+cooks(m)
+```
+
+## Model Diagnostics:  Leverage and Influential Points {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let's assess leverage and influence in our example.
+
+<center>
+```{r}
+cooks(m2)
+```
+</center>
+
+- I might include observation 4 when checking.
+
+## Model Diagnostics:  Multicollinearity {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Collinearity/multicollinearity: a correlation between two or more predictor variables affects the estimation procedure.
+
+- We will use the variance inflation factor (VIF) to check for multicollinearity. $$ \text{VIF}_j = \frac{1}{1-R^2_j}, $$
+
+- where
+
+    - $j$ = the predictor of interest and $j \in \{1, 2, ..., k \}$,
+    - $R^2_j$ results from regressing $x_j$ on the remaining $(k-1)$ predictors.
+    
+- We say that multicollinearity is present if VIF > 10.
+
+- How do we deal with multicollinearity?
+
+    - Easy answer: remove at least one predictor from the collinear set, then reassess VIF.
+    
+    - More complicated: discussing with collaborators/bosses.
+    
+## Model Diagnostics:  Multicollinearity {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- We will use the [`vif()`](https://www.rdocumentation.org/packages/car/versions/3.1-0/topics/vif) function from the `car` package.
+
+```{r}
+#| eval: false
+library(car)
+vif(m)
+```
+
+- Note: the `car` package overwrites some functions from `tidyverse`, so I typically do not load the full library.
+
+- There will be a VIF value for each predictor in the model.
+
+    - Note that VIF can sometimes be high for related categorical terms.
+    
+## Model Diagnostics:  Multicollinearity {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let's check the multicollinearity for our data,
+
+```{r}
+car::vif(m2)
+```
+
+- No multicollinearity is present.
+
+## Sensitivity Analysis {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- We can perform sensitivity analysis to determine how much our model changes when we exclude the outliers.
+
+    - Model 1: model using data with all observations
+    - Model 2: model using data without identified outliers
+  
+- Questions we will ask: 
+
+    - How different are the $\hat{\beta}_i$? 
+    - Did a predictor go from being significant to non-significant? (or vice-versa?)
+    - Does the direction of $\hat{\beta}_i$ change? 
+    - What is the difference in $R^2$?
+
+- We only look at sensitivity analysis **once** (i.e., only remove data points once for reanalysis).
+  
+    - If we keep going, we will whittle down the dataset to as close to a "perfect fit" as possible, introducing other issues.
+    
+## Sensitivity Analysis {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Let's perform sensitivity analysis on our example model.
+
+::: {.panel-tabset}
+
+## Which are Outliers?
+
+```{r}
+colony_outliers <- colony2 %>% filter(outlier == "Suspected")
+head(colony_outliers, n=5)
+```
+
+## Full Data
+
+```{r}
+m2 <- glm(colony_lost ~ quarter_Q1 + quarter_Q2 + quarter_Q3 + year + colony_max, data = colony2)
+summary(m2)
+```
+
+## Reduced Data
+
+```{r}
+colony_no_outliers <- colony2 %>% filter(outlier == "Not Suspected")
+m3 <- glm(colony_lost ~ quarter_Q1 + quarter_Q2 + quarter_Q3 + year + colony_max, data = colony_no_outliers)
+summary(m3)
+```
+
+:::
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the general linear model (GLM),
+
+$$ y = \beta_0 + \beta_1 x_1 + ... + \beta_k x_k $$
+
+- This can be simplified using matrix expressions, 
+
+$$ \mathbf{Y} = \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon}, $$
+
+- where
+
+    - $\mathbf{Y}$ is the $n \times 1$ column vector of responses.
+    
+    - $\mathbf{X}$ is the $n \times p$ design matrix.
+    
+    - $\boldsymbol{\beta}$ is the $p \times 1$ column vector of regression coefficients.
+    
+    - $\boldsymbol{\varepsilon}$ is the $n \times 1$ column vector of error terms.
+    
+## Regression in Matrix Form {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Looking at the (literal) matrices,
+
+$$ 
+\begin{align*}
+\mathbf{Y} &= \mathbf{X} \boldsymbol{\beta} + \boldsymbol{\varepsilon} \\
+\begin{bmatrix} y_1 \\ \vdots \\ y_n \end{bmatrix} &= \begin{bmatrix} 1 & x_{1,1} & x_{1,2} & \cdots & x_{1,(p-1)}  \\ \vdots & \vdots & \vdots & & \vdots \\ 1 & x_{n,1} & x_{n,2} & \cdots & x_{n, (p-1)} \end{bmatrix} \begin{bmatrix} \beta_0 \\ \beta_1 \\ \vdots \\ \beta_{p-1} \end{bmatrix} + \begin{bmatrix} \varepsilon_1 \\ \vdots \\ \varepsilon_n \end{bmatrix}
+\end{align*}
+$$
+
+- where
+
+    - $\mathbf{y}$ is the $n \times 1$ column vector of responses.
+    
+    - $\mathbf{X}$ is the $n \times p$ design matrix.
+    
+    - $\boldsymbol{\beta}$ is the $p \times 1$ column vector of regression coefficients.
+    
+    - $\boldsymbol{\varepsilon}$ is the $n \times 1$ column vector of error terms.
+    
+## Vector of Error Terms {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Recall the error term, $\boldsymbol{\varepsilon} = \left[ \varepsilon_1, \ \varepsilon_2, \ \cdots, \ \varepsilon_n\right]^\text{T}$, a vector of independent normal random variables with
+    
+    - a $n \times 1$ expectation vector,  $\text{E}\left[\boldsymbol{\varepsilon}\right] = 0$ and 
+    
+    - a $n \times n$ variance-covariance matrix $\sigma^2 \mathbf{I},$
+
+$$
+\sigma^2 \mathbf{I} = \sigma^2 \begin{bmatrix} 1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & 0 \\
+0 & 0 & \cdots & 1
+\end{bmatrix} =  \begin{bmatrix} \sigma^2 & 0 & \cdots & 0 \\
+0 & \sigma^2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & 0 \\
+0 & 0 & \cdots & \sigma^2
+\end{bmatrix}
+$$
+
+- Note that we do not have to assume independence ... 
+
+    - ... we just have to account for dependence if the data is not independent.
+    
+## Estimation of $\boldsymbol{\beta}$ and $\boldsymbol{\varepsilon}_i$ {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}   
+
+- We estimate $\boldsymbol{\beta}$,
+
+$$
+\boldsymbol{\hat{\beta}} = (\mathbf{X}'\mathbf{X})^{-1} \mathbf{X}'\mathbf{Y}
+$$
+
+- ... and find the predicted (or fitted) value,
+
+$$
+\mathbf{\hat{Y}} = \mathbf{X} \boldsymbol{\hat{\beta}} = \mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y}
+$$
+
+- ... and find the residual,
+
+$$
+\boldsymbol{\hat{\varepsilon}} \equiv \mathbf{e} = \mathbf{Y} - \mathbf{\hat{Y}} = \mathbf{Y} - \mathbf{X}\boldsymbol{\hat{\beta}} 
+$$
+
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's talk about the design matrix for a second.
+
+$$\mathbf{X} = \begin{bmatrix} 1 & x_{1,1} & x_{1,2} & \cdots & x_{1,(p-1)}  \\ \vdots & \vdots & \vdots & & \vdots \\ 1 & x_{n,1} & x_{n,2} & \cdots & x_{n, (p-1)} \end{bmatrix}$$
+
+- Why is there a column of 1's?
+
+- What is $p$?
+
+- Note that for estimation to happen, $\mathbf{X}$ must be full rank.
+
+    - A $r \times r$ matrix is said to be *full rank* if its rank is $r$.
+    
+    - This means that the matrix is *nonsingular* (it has an inverse).
+    
+    - Full rank also means that all columns are linearly independent.    
+    
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+Full rank also means that all columns are linearly independent.
+
+::: {style="font-size: 150%;"}
+
+Full rank also means that all columns are linearly independent.
+
+:::
+
+::: {style="font-size: 200%;"}
+
+Full rank also means that all columns are linearly independent.
+
+:::
+
+::: {style="font-size: 300%;"}
+
+Full rank also means that all columns are linearly independent.
+
+:::
+
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Full rank also means that all columns are linearly independent.
+
+- Why am I harping on this?
+
+## Design Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Full rank also means that all columns are linearly independent.
+
+- Why am I harping on this?
+
+- **This is why we have reference groups for categorical predictors!!**
+
+    - If we were to include all $c$ classes, we would no longer have a full rank design matrix.
+    
+    - This is why when we do not use indicator variables, software "chooses" a reference group for us.
+    
+        - We literally cannot include all groups as predictors because we cannot perform the estimation.
+
+## Hat Matrix! {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's revisit the predicted value,
+
+$$
+\begin{align*}
+\mathbf{\hat{Y}} &= \mathbf{X} \boldsymbol{\hat{\beta}} \\
+&= \mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'\mathbf{Y} \\
+&= \left( \mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}' \right) \mathbf{Y}
+\end{align*}
+$$
+
+- We call $\mathbf{X}\left(\mathbf{X}'\mathbf{X}\right)^{-1} \mathbf{X}'$ the *hat matrix*.
+  
+    - .......... because it gives $\mathbf{Y}$ its hat.
+
+- Note that the hat matrix is symmetric and idempotent (i.e., $\mathbf{H}\mathbf{H} = \mathbf{H}$).
+
+## Hat Matrix and Residuals {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We have an alternate way of expressing the residuals,
+
+$$
+\begin{align*}
+\mathbf{e} &= \mathbf{Y} - \mathbf{\hat{Y}} \\
+&= \mathbf{Y} - \mathbf{H}\mathbf{Y} \\
+&= \left(\mathbf{I} - \mathbf{H} \right) \mathbf{Y}
+\end{align*}
+$$
+
+- This is why you will see references to elements from the hat matrix ($h_{ii}$) for calculations related to residual analysis.
+
+## Wrap Up - Matrices {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Note that we can go through the matrix-based calculations for everything we've learned so far, but that is not the point of this course.
+
+- Goal: give you an appreciation/understanding of what's going on under the hood.
+
+- If you are interested, you can read more here:
+
+    - [link 1](https://www.bbk.ac.uk/ms/brooms/teaching/SA/Stat-Anal07.pdf)
+    
+    - [link 2](http://www.stat.columbia.edu/~fwood/Teaching/w4315/Fall2009/lecture_11)
+    
+    - [link 3](http://www.stat.columbia.edu/~fwood/Teaching/w4315/Fall2009/lecture_12)
+
+- Now, let's talk about leaving the normal distribution...
+
+## Introduction to Generalized Linear Models {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We will now extend to [generalized linear models](https://en.wikipedia.org/wiki/Generalized_linear_model) (GzLM).
+
+    - These models allow us to model non-normal responses.
+    
+- GzLMs have three components:
+
+    - Random component: $\mathbf{Y}$, the response.
+    
+    - Linear predictor: $\mathbf{X}\boldsymbol{\beta}$, where $\boldsymbol{\beta}$ is the parameter vector and $\mathbf{X}$ is the $n \times p$ design matrix that contains $p-1$ explanatory variables for the $n$ observations.
+    
+    - Link function: $g\left(\text{E}[\mathbf{Y}]\right) = \mathbf{X}\boldsymbol{\beta}$
+    
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- The random component consists of the response, $y$
+
+    - $y$ has *independent* observations
+    
+    - $y$'s probability density or mass function is in the exponential family
+    
+- A random variable, $y$, has a distribution in the [exponential family](https://en.wikipedia.org/wiki/Exponential_family) if it can be written in the following form:
+$$ f(y | \theta, \phi) = \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}, $$
+- for specified functions $a(\cdot)$, $b(\cdot)$, and $c(\cdot)$.
+
+    - $\theta$ is the parameter of interest (canonical or natural)
+    
+    - $\phi$ is usually a nuissance parameter (scale or dispersion)
+    
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's show that the normal distribution is in the exponential family.
+
+- Assume $y \sim N(\mu, \sigma^2)$; we will treat $\sigma^2$ as a nuisance parameter.
+
+$$
+\begin{align*}
+f(y | \theta, \phi) &= \left(\frac{1}{2\pi \sigma^2} \right)^{1/2} \exp\left\{ \frac{-1}{2\sigma^2} (y-\mu)^2 \right\} \\
+&= \exp\left\{ \frac{-y^2}{2\sigma^2} + \frac{y\mu}{\sigma^2} - \frac{\mu^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp\left\{\frac{y\mu-\mu^2/2}{\sigma^2} - \frac{y^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+$$
+\begin{align*}
+f(y | \theta, \phi) &= \exp\left\{\frac{y\mu-\mu^2/2}{\sigma^2} - \frac{y^2}{2\sigma^2} - \frac{1}{2} \ln\left(2\pi\sigma^2\right) \right\} \\
+&= \exp \left\{ \frac{y\theta-b(\theta)}{a(\phi)} + c(y|\phi) \right\}
+\end{align*}
+$$
+
+- $\theta = \mu$
+
+- $\phi = \sigma^2$
+
+- $a(\phi) = \phi$
+
+- $b(\theta) = \mu^2/2 = \theta^2/2$
+
+- $c(y|\phi) = -(1/2 \ln(2\pi\sigma^2) + y^2/(2\sigma^2))$
+
+## Random Component {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Why are we restricted to the exponential family?
+
+    - There are general expressions for model likelihood equations.
+    
+    - There are asymptotic distributions of estimators for model parameters (i.e., $\hat{\beta}$).
+    
+        - This allows us to "know" things!
+    
+    - We have an algorithm for fitting models.
+    
+## Linear Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let us first discuss notation.
+
+    - $x_{ij}$ is the $j$<sup>th</sup> explanatory variable for observation $i$
+    
+        - $i=1, ... , n$ 
+        
+        - $j=1, ..., p-1$
+    
+    - Each observation (or subject) has a vector, $x_i = \left[1, x_{i,1}, ..., x_{i, p-1}\right]$
+    
+        - The leading 1 is for the intercept, $\beta_0$.
+    
+        - These are put together into $\mathbf{X}$, the design matrix.
+        
+## Linear Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+        
+- The linear predictor relates parameters ($\eta_i$) pertaining to E[$y_i$] to the explanatory variables using a linear combination,
+$$ \eta_i = \sum_{j=1}^{p-1} \beta_j x_{ij} $$
+- In matrix form,
+$$ \boldsymbol{\eta} = \mathbf{X} \boldsymbol{\beta} $$
+
+- This is a linear predictor because it is linear in the *parameters*, $\boldsymbol{\beta}$.
+
+    - The *predictors* can be nonlinear.
+    
+        - e.g., time<sup>2</sup> (quadratic term), $x_1 x_2$ (interaction)
+        
+## Linear Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- We call $\mathbf{X}$ the design matrix.
+
+    - There are $n$ rows (one for each observation).
+    
+    - There are $p$ columns ($p-1$ predictors -- the $p$<sup>th</sup> column is for the intercept).
+    
+- In most studies, we have $p < n$.
+    
+    - Goal: summarize data using a smaller number of parameters.
+    
+- Some studies have $p >>> n$, e.g., genetics.
+
+    - These studies need special methodology that is not covered in this course.
+    
+- GzLMs treat $y_i$ as random, $x_i$ as fixed.
+
+    - These are called fixed-effects models.
+    
+    - There are also random effects $\to$ fixed effects + random effects = mixed models.
+    
+        - Random effects are beyond the scope of this course.
+    
+## Link Function {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- The link function, $g(\cdot)$, connects the random component with the linear predictor.
+
+    - $g(\cdot)$ is a monotonic and differentiable function.
+
+- Let $\mu_i = \text{E}[y_i]$:
+
+    - The GzLM links $\eta_i$ to $\mu_i$ by $\eta_i = g(\mu_i)$
+    
+- In the exponential family representation, a certain parameter serves as its natural parameter.
+
+    - Normal distribution: the mean 
+    - Binomial: ln(odds)
+    - Poisson: ln(mean)
+    
+- The link function that transforms $\mu_i$ to the natural parameter, $\theta$, is called the *canonical link*.
+
+    - In the normal, $\theta=\mu$, so the canonical link is the identity.
+    - In the binomial and Poisson, the canonical link is the log.
+
+## Wrap Up {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Today we have talked about the underlying matrix algebra in regression analysis.
+
+- We also introduced generalized linear model.
+
+    - You can read more about the GzLM [here](https://statmath.wu.ac.at/courses/heather_turner/glmCourse_001.pdf).
+    
+- Moving forward, we will be learning how to construct regression models using the following distributions:
+
+    - Gamma
+    - Binomial
+    - Multinomial
+    - Poisson
+    - Negative binomial
+    
+- Note that this is *just the beginning* of modeling.
+
+- There are more complex models that are beyond the scope of this course! 
+
+    - Start thinking now about what you would like to study in Advanced Statistical Modeling.
+
+## Gamma Regression {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Consider the gamma distribution,
+$$
+f(y|\mu, \gamma) = \frac{1}{\Gamma(\gamma) \left( \frac{\mu}{\gamma} \right)^\gamma} y^{\gamma-1} \exp\left\{ \frac{-y \gamma}{\mu} \right\}
+$$
+- where: $y > 0$, $\mu > 0$, $\gamma > 0$, and $\Gamma(\cdot)$ is the [Gamma function](https://en.wikipedia.org/wiki/Gamma_function)
+
+- This is appropriate for continuous, positive data that has a right skew.
+
+    - I have primarily used it for complete time-to-event data
+    
+        - e.g., length of stay
+        
+- The canonical link is the negative inverse...
+    
+    - ...but the common link to use is the log.
+    
+## Gamma Regression - R Syntax {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}       
+        
+- We will use the `glm()` function to perform Gamma regression,
+
+```{r, echo = TRUE, eval = FALSE}
+m <- glm([outcome] ~ [pred_1] + [pred_2] + ... + [pred_k], 
+         data = [dataset], 
+         family = Gamma(link = "log"))
+```
+
+- Note the new-to-us piece of syntax: `link = "log"` attached to `family`.
+
+## Data from the Jackson Heart Study {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Consider data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/). Let us consider the baseline visit (V1). 
+
+::: {.panel-tabset}
+
+## Data
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(haven)
+data <- read_sas("/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/1 - Teaching/STA6235 Modeling in Regression/0-data/analysis1.sas7bdat") %>%
+  select(subjid, HbA1c, age, BMI3cat) %>%
+  na.omit()
+head(data)
+```
+
+## Code
+
+```{r}
+#| eval: false
+library(tidyverse)
+library(haven)
+data <- read_sas("/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/STA6235 Modeling in Regression/0-data/analysis1.sas7bdat") %>%
+  select(subjid, HbA1c, age, BMI3cat) %>%
+  na.omit()
+```
+
+:::
+
+## Example: HbA1c in the Jackson Heart Study {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+::: {.panel-tabset}
+
+## Histogram
+
+<center>
+```{r}
+#| echo: false
+data %>% ggplot(aes(x = HbA1c)) +
+  geom_histogram(binwidth = 0.5, color="hotpink", fill="pink") +
+  labs(y = "Count",
+       x = "Hemoglobin A1c") +
+  theme_bw()
+```
+</center>
+
+## Code
+
+```{r}
+#| eval: false
+data %>% ggplot(aes(x = HbA1c)) +
+  geom_histogram(binwidth = 0.5, color="hotpink", fill="pink") +
+  labs(y = "Count",
+       x = "Hemoglobin A1c") +
+  theme_bw()
+```
+
+:::
+  
+## Example: HbA1c in the Jackson Heart Study {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's take a basic example,
+
+::: {.panel-tabset}
+
+## Code
+
+```{r}
+m1 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+```
+
+## Results
+
+```{r}
+#| echo: false
+summary(m1)
+```
+
+$$\ln(y) = 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2$$
+
+:::
+
+## Gamma Regression -- Interpretations {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Uh oh. We are now modeling ln(*y*) and not *y* directly...
+
+    - We need to "undo" the ln() so that we can discuss the results in the original units of *y*
+
+- We will transform the coefficients: 
+
+$$
+\begin{align*}
+\ln(y) &= \hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + ... \hat{\beta}_k x_k \\
+y &= \exp\left\{\hat{\beta}_0 + \hat{\beta}_1 x_1 + \hat{\beta}_2 x_2 + ... \hat{\beta}_kx_k \right\} \\
+y &= e^{\hat{\beta}_0} e^{\hat{\beta}_1x_1} e^{\hat{\beta}_2 x_2} \cdot \cdot \cdot e^{\hat{\beta}_k x_k}
+\end{align*}
+$$
+
+- These are *multiplicative* effects, as compared to the *additive* effects we saw under the normal distribution.
+
+## Gamma Regression -- Interpretations {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- In the JHS model,
+
+$$\ln(y) = 1.625 + 0.003 \text{ age} - 0.064 \text{ BMI}_1 - 0.110 \text{ BMI}_2$$
+
+::: {.panel-tabset}
+
+## Age
+
+- For a 1 year increase in age, the expected HbA1c is multiplied by $e^{0.003}=1.003$. This is a 0.3% increase.
+
+- For a 10 year increase in age, the expected HbA1c is multiplied by $e^{0.003 \times 10}=1.030$. This is a 3% increase.
+
+## BMI~1~
+- The expected HbA1c for those intermediate health (BMI~1~=1, BMI~2~=0) is $e^{-0.064}=0.938$ times that of those in poor health (BMI~1~=0, BMI~2~=0). This is a ~6% decrease.
+
+## BMI~2~
+- The expected HbA1c for those ideal health (BMI~1~=0, BMI~2~=1) is $e^{-0.110}=0.896$ times that of those in poor health (BMI~1~=0, BMI~2~=0). This is a ~10% decrease.
+
+:::
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- What we've learned so far re: significance of predictors holds true with GzLM
+
+    - Significance of individual (continuous or binary) predictors $\to$ *t*-test (`summary()`)
+    
+    - Significance of categorical (>2 categories) predictors $\to$ Type III SS ANOVA (`car::Anova()`)
+        
+```{r}
+#| eval: false
+car::Anova(model_results, type = 3)
+```
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's consider a different model with the JHS data,
+
+::: {.panel-tabset}
+
+## Code
+
+```{r}
+m2 <- glm(HbA1c ~ age + as.factor(BMI3cat) + age:as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+```
+
+## Results
+
+```{r}
+#| echo: false
+summary(m2)
+```
+
+:::
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's see if the interaction between age and health status is significant,
+
+```{r}
+car::Anova(m2)
+```
+
+- The interaction between age and health status as indicated by BMI is not significant (*p* = 0.677), so it should be removed from the model.
+
+## Gamma Regression -- Significance of Predictors {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Removing the interaction term,
+
+```{r}
+m3 <- glm(HbA1c ~ age + as.factor(BMI3cat), 
+          data = data, 
+          family = Gamma(link = "log"))
+car::Anova(m3, type=3)
+```
+
+- Age is a significant predictor of HbA1c (*p* < 0.001). 
+
+- BMI is a significant predictor of HbA1c (*p* < 0.001).
+
+## Visualizations {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+::: {.panel-tabset}
+
+## Prompts
+
+- Let's construct a graph of the resulting model (live!).
+
+    - *y*-axis: HbA1c
+
+    - *x*-axis: age
+
+    - lines: BMI3cat
+
+- We will go into two breakout rooms. Each group will report back after 20-30 minutes.
+
+
+
+## Code
+
+```{r}
+
+# we will graph in here
+
+```
+
+:::
