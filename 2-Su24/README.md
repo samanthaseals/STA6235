@@ -8,7 +8,7 @@ This is the repository for STA6235 - Modeling in Regression
 |      | R          | 06/20 | Modeling basics                                   | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W01-L2-modeling-basics.qmd) |
 | 2    | T          | 06/25 | Categorical predictors                            | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W02-L1-categorical-terms.qmd) |
 |      | R          | 06/27 | Interaction terms                                 | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W02-L2-interactions.qmd) |
-| 3    | T          | 07/02 | Assumptions, diagnostics, gamma regression        | [raw qmd - forthcoming]() |
+| 3    | T          | 07/02 | Assumptions, diagnostics, gamma regression        | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W03-L1-assumptions-diagnostics-gzlm-gamma.qmd) |
 |      | R          | 07/04 | July 4 Holiday - no class                         |             |
 | 4    | T          | 07/09 | Binary logistic regression                        | [raw qmd - forthcoming]() |
 |      | R          | 07/11 | Project 1 - Dr. Seals traveling                   | |
