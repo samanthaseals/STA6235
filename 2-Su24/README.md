@@ -10,9 +10,9 @@ This is the repository for STA6235 - Modeling in Regression
 |      | R          | 06/27 | Interaction terms                                 | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W02-L2-interactions.qmd) |
 | 3    | T          | 07/02 | Assumptions, diagnostics, gamma regression        | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W03-L1-assumptions-diagnostics-gzlm-gamma.qmd) |
 |      | R          | 07/04 | July 4 Holiday - no class                         |             |
-| 4    | T          | 07/09 | Binary logistic regression                        | [raw qmd - forthcoming]() |
+| 4    | T          | 07/09 | Binary logistic regression                        | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W04-L1-binary-logistic-regression.qmd) |
 |      | R          | 07/11 | Project 1 - Dr. Seals traveling                   | |
-| 5    | T          | 07/16 | Ordinal and nominal logistic regression           | [raw qmd - forthcoming]() |
+| 5    | T          | 07/16 | Ordinal and nominal logistic regression           | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W05-L1-ordinal-nominal-logistic-regression.qmd) |
 |      | R          | 07/18 | Project 2                                         | |
 | 6    | T          | 07/23 | Poisson and negative binomial regressions         | [raw qmd - forthcoming]() |
 |      | R          | 07/25 | Project 3                                         | |
