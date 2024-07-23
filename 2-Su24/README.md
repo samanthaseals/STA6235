@@ -14,7 +14,7 @@ This is the repository for STA6235 - Modeling in Regression
 |      | R          | 07/11 | Project 1 - Dr. Seals traveling                   | |
 | 5    | T          | 07/16 | Ordinal and nominal logistic regression           | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W05-L1-ordinal-nominal-logistic-regression.qmd) |
 |      | R          | 07/18 | Project 2                                         | |
-| 6    | T          | 07/23 | Poisson and negative binomial regressions         | [raw qmd - forthcoming]() |
+| 6    | T          | 07/23 | Poisson and negative binomial regressions         | [raw qmd](https://github.com/samanthaseals/STA6235/blob/main/2-Su24/lectures/W06-L1-poisson-and-negbin-regression.qmd) |
 |      | R          | 07/25 | Project 3                                         | |
 | 7    | T          | 07/30 | Choosing the right distribution - EDA             | [raw qmd - forthcoming]() |
 |      | R          | 08/01 | Choosing the right distribution - assumptions     | [raw qmd - forthcoming]() |
