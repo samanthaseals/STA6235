@@ -1,0 +1,336 @@
+---
+title: "Introduction to Technology"
+subtitle: "STA6235: Modeling in Regression"
+execute:
+  echo: true
+  warning: false
+  message: false
+  error: true
+format: 
+  revealjs:
+    code-overflow: wrap
+    theme: uwf2
+    embed-resources: true
+    slide-number: false
+    width: 1600
+    height: 900
+    df-print: paged
+    html-math-method: katex
+title-slide-attributes:
+    data-background-image: /Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/title.png
+    data-background-size: contain 
+editor: source
+pdf-separate-fragments: true
+fig-align: center
+---
+
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Welcome to Modeling in Regression - Fall 2024!
+
+    - Canvas set up
+    - Syllabus
+    - Discord
+    - R/RStudio
+    - Quarto
+    - GitHub
+    - Resources
+    
+## Introduction {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- General topics:
+
+    - generalized linear models
+    - linear regression (OLS)
+    - Gamma regression
+    - Binomial logistic regression
+    - Ordinal logistic regression
+    - Nominal logistic regression
+    - Poisson regression
+    - negative binomial regression
+    - zero-inflated models
+    - how to choose a distribution
+    
+- **This is an applied class.**    
+    
+## Weekly Schedule {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+    
+- **Lecture weeks:**
+
+    - Lecture Tuesday 
+    - Lecture Thursday
+    - Throughout: activities in breakout rooms
+    
+- **Project weeks:**
+
+    - Short meeting on Tuesday to introduce project
+    - No meeting on Thursday
+    - Project due the following Tuesday
+    
+- **Final Exam:**
+
+    - There will be a *proctored* and *written* final exam on Thursday, 12/05.
+    - If you are in Pensacola, the exam is 2:00-4:30 pm.
+    - If you are online, you will schedule your exam based on the guidelines from MathStat proctoring.
+    
+## GitHub {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Our course lectures and labs are posted on GitHub.
+
+- Please bookmark the repository: [GitHub for STA6349](https://github.com/samanthaseals/STA6235).
+
+- You will want to look at my .qmd files for formatting / $\LaTeX$ purposes.
+
+- Feel free to poke around [my GitHub](https://github.com/samanthaseals) to see materials for other classes.
+    
+
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+
+- We will be using R in this course.
+
+    - I use the RStudio IDE, however, if you would like to use another IDE, that is fine.
+    
+- It is okay if you have not used R before!
+
+- Full disclosure: I am a **biostatistician** first, **programmer** second.
+
+    - This means that I focus on the application of statistical methods and not on "understanding" the innerworkings of R.
+    
+        - R is a *tool* that we use, like how python, SAS, Excel, etc. are tools.
+    
+    - Sometimes my code is not elegant/efficient, and that's okay! Because our focus is on the application of methods, we are interested in the code working.
+    
+    - I have learned *so much* from my students since implementing R in the classroom.
+    
+        - Do not be afraid to teach me new things!
+        
+- **This is an applied class.**        
+        
+## R/RStudio {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}     
+
+- You can install R and RStudio on your computer for **free**.
+
+    - [R from CRAN](https://cran.r-project.org/)
+    
+    - [RStudio from Posit](https://posit.co/products/open-source/rstudio/)
+    
+- Alternative to installing: [RStudio Server](https://rstudio.hmcse.uwf.edu/) hosted by [UWF HMCSE](https://uwf.edu/hmcse/)
+
+- **Do not use Citrix.**
+
+- I encourage you to install R on your own machine if you are able.
+
+    - In the "real world," you will not have access to the server. 
+    
+    - Installing on your own machine will help your future self troubleshoot issues.
+        
+## Tidy Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}  
+
+Journal article: [*Tidy Data* by Wickham](https://vita.had.co.nz/papers/tidy-data.pdf) (2014, [*Journal of Statistical Software*](https://www.jstatsoft.org/article/view/v059i10))
+
+Book chapter: [*Data Tidying* by Wickham, Çetinkaya-Rundel, and Grolemund](https://r4ds.hadley.nz/data-tidy)
+
+- There are three interrelated rules that make a dataset tidy:
+
+    1. Each variable is a column; each column is a variable.
+    2. Each observation is a row; each row is an observation.
+    3. Each value is a cell; each cell is a single value.
+
+![](images/W01-L1-b.png){fig-align="center"} 
+
+
+## Tidyverse {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}  
+
+![](images/W01-L1-a.png){fig-align="center"} 
+
+## Tidyverse {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- `tibble` for modern data frames.
+- `readr` and `haven` for data import.
+    - `readr` is pulled in with `tidyverse`
+    - `haven` needs to be called in on its own
+- `tidyr` for data tidying.    
+- `dplyr` for data manipulation.
+- `ggplot2` for data visualization.
+
+- It is not possible for me to teach you everything you will ever need to know about programming in R.
+
+    - Good resource for `tidyverse`: [data science in a box](https://datasciencebox.org/02-exploring-data)
+
+## Tidyverse {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- A major advantage of using `tidyverse` is the common "language" between the functions.
+
+- Another advantage: the [pipe operator](https://style.tidyverse.org/pipes.html), `%>%`.
+    
+    - Yes, there is a pipe operator now included in base R. No, I do not use it. 
+
+        - Here is a discussion of similarities and differences [from Hadley himself](https://www.tidyverse.org/blog/2023/04/base-vs-magrittr-pipe/).
+    
+    - By default, `%>%` deposits everything that came before into the first argument of the next function.
+    
+        - If we want to insert it elsewhere, we can indicate that with a "." in the function.
+
+```{r}
+#| eval: false
+
+lm(body_mass_g ~ flipper_length_mm, data = penguins)
+
+penguins %>% lm(body_mass_g ~ flipper_length_mm, data = .)
+```
+
+## Tidyverse {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- If we try to use a function before calling its package in, we will see an error.
+
+```{r}
+sw <- tibble(starwars) %>% filter(mass < 100)
+```
+
+- We are good to go after calling in `tidyverse`.
+
+```{r}
+library(tidyverse)
+sw <- tibble(starwars) %>% filter(mass < 100)
+head(sw, n=3)
+```
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Let's import data from the [Jackson Heart Study](https://www.jacksonheartstudy.org/).
+
+```{r}
+#| eval: false
+jhs_csv <- read_csv("/path/to/folder/analysislong.csv")
+head(jhs_csv, n = 6)
+```
+
+```{r}
+#| echo: false
+jhs_csv <- read_csv("/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/1 - Teaching/STA6349 Applied Bayesian Analysis/GitHub/02-Fa24/0-data/analysislong.csv")
+
+head(jhs_csv, n = 6)
+```
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Be comfortable with Googling for help with code to import data.
+
+- As a collaborative statistician, I have received the following file types:
+
+    - .sas7bdat
+    - .sav
+    - .dat
+    - .csv
+    - .xls
+    - .xlsx
+    - .txt
+    - Google Sheet
+    - hand written
+
+## Importing Data {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- There have been times where I have received data as a .xlsx, but I can't get it to import properly.
+
+    - Usually, the issue is that there is a character variable with too much text.
+    
+    - Sometimes, it's that the variable type changes mid-dataset.
+    
+        - i.e., both a number and a character stored in the same vector.
+
+- Sometimes the solution is saving it as a different file type (I default to .csv).
+
+- Get comfortable Googling error messages.
+
+    - I am still consulting Dr. Google for assistance on a daily basis!
+    
+- Try not to do any data management within the original file type!
+
+    - We want to be able to retrace our steps.
+    
+    - Reproducible research!
+
+## Data Manipulation {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- Functions:
+
+    - `select()`: Selecting columns.
+    - `filter()`: Filtering the observations.
+    - `mutate()`: Adding or transforming columns.
+    - `summarise()`: Summarizing data.
+    - `group_by()`: Grouping data for summary operations.
+    - `%>%`: Pipelines.
+
+## Data Manipulation {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- `select()`: Selecting columns.
+
+```{r}
+jhs_csv %>% 
+  select(subjid, visit, age, sex) %>% 
+  head(n=4)
+```
+
+## Data Manipulation {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- `filter()`: Filtering rows.
+
+```{r}
+jhs_csv %>% 
+  filter(visit == 1) %>% 
+  head(n=3)
+```
+
+
+
+## Data Manipulation {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- `mutate()`: Adding or transforming columns.
+
+
+```{r}
+jhs_csv %>% 
+  filter(visit == 1) %>%
+  select(subjid, sex) %>%
+  mutate(male = if_else(sex == "Male", 1, 0)) %>%
+  head(n=3)
+```
+
+
+## Data Manipulation {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- `summarise()`: Summarizing data.
+
+```{r}
+jhs_csv %>% 
+  filter(visit == 1) %>%
+  summarize(n = n(),
+            mean_BMI = round(mean(BMI, na.rm = TRUE),2),
+            sd_BMI = round(sd(BMI, na.rm = TRUE),2),
+            n_female = sum(sex == "Female", na.rm = TRUE),
+            pct_female = round(sum(sex == "Female", na.rm = TRUE)*100/n(),2))
+```
+
+## Data Manipulation {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"} 
+
+- `group_by()`: Grouping data for summary operations.
+
+```{r}
+jhs_csv %>% 
+  filter(visit == 1) %>%
+  group_by(HTN) %>%
+  summarize(n = n(),
+            mean_BMI = round(mean(BMI, na.rm = TRUE),2),
+            sd_BMI = round(sd(BMI, na.rm = TRUE),2),
+            n_female = sum(sex == "Female", na.rm = TRUE),
+            pct_female = round(sum(sex == "Female", na.rm = TRUE)*100/n(),2))
+```
+
+## Wrap Up {background-image="/Users/sseals/Library/CloudStorage/GoogleDrive-sseals@uwf.edu/My Drive/00 - Personal/R/quarto themes/slide.png" background-size="contain"}
+
+- Today we have gently introduced data management in R.
+
+- I do not expect you to become an expert R programmer, but the more you practice, the easier it becomes.
+
+- Today's activity: Quiz 0
+
